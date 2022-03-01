@@ -31,12 +31,9 @@ class LoginWidget extends StatelessWidget {
                 width: 300,
                 child: LottieBuilder.asset("assets/lottie/login2.json"),
               ),
-              const SizedBox(
-                height: 10,
-              ),
               Container(
                 width: 325,
-                height: 450,
+                height: 440,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -58,7 +55,7 @@ class LoginWidget extends StatelessWidget {
                         fontSize: 15,
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 25),
                     Container(
                       width: 260,
                       height: 60,
@@ -75,7 +72,7 @@ class LoginWidget extends StatelessWidget {
                             )),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 20),
                     Container(
                       width: 260,
                       height: 60,
@@ -101,7 +98,7 @@ class LoginWidget extends StatelessWidget {
                           TextButton(
                             onPressed: click,
                             child: const Text(
-                              "Forget Password",
+                              "Forget Password?",
                               style: TextStyle(color: Colors.deepOrange),
                             ),
                           )
