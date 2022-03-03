@@ -3,7 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'config.dart';
 
-class HomeScreen extends StatelessWidget {
+class ListCoursesWidget extends StatelessWidget {
+  const ListCoursesWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
