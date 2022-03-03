@@ -34,6 +34,7 @@ flutter:
     - assets/lottie/login2.json
     - assets/lottie/otpverification.json
     - assets/icons/
+    - assets/icons/shopping-bag.svg
     - assets/images/
   fonts:
     - family: CustomIcons
