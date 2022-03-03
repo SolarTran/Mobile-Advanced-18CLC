@@ -13,8 +13,8 @@ class CourseDetailWidget extends StatelessWidget {
         decoration: const BoxDecoration(
           color: Color(0xFFF5F4EF),
           image: DecorationImage(
-            image: AssetImage("assets/images/ux_big.png"),
-            alignment: Alignment.topRight,
+            image: AssetImage("assets/images/1.jpg"),
+            alignment: Alignment.topCenter,
           ),
         ),
         child: Column(

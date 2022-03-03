@@ -6,6 +6,7 @@ import 'Authentication/ForgotPassword/SendMail.dart';
 import 'Authentication/ForgotPassword/ResetPassword.dart';
 import 'Authentication/ForgotPassword/OtpVerify.dart';
 import 'Courses/CourseDetail.dart';
+import 'Courses/ListCourses.dart';
 import 'User/UserAppSettings.dart';
 import 'User/UserProfile.dart';
 
@@ -15,6 +16,6 @@ void main() => runApp(MaterialApp(
     primaryColor: Colors.purple,
   ),
   title: "Login App",
-  home: DetailsScreen(),
+  home: HomeScreen(),
 ));
 
