@@ -1,7 +1,6 @@
 import 'package:flutter_svg/svg.dart';
 import 'config.dart';
 import 'lesson.dart';
-import 'detail_page.dart';
 import 'package:flutter/material.dart';
 
 class ListTeachersScreen extends StatefulWidget {

@@ -3,6 +3,8 @@ import 'StudentSchedule.dart';
 import 'StudentOverview.dart';
 
 class SchoolManagement extends StatefulWidget {
+  const SchoolManagement({Key? key}) : super(key: key);
+
   @override
   _SchoolManagementState createState() => _SchoolManagementState();
 }
@@ -10,10 +12,10 @@ class SchoolManagement extends StatefulWidget {
 class _SchoolManagementState extends State<SchoolManagement> {
   int _selectedItemIndex = 0;
   final List pages = [
-    HomePage(),
+    const HomePage(),
     null,
     null,
-    CalendarPage(),
+    const CalendarPage(),
     null,
   ];
   @override

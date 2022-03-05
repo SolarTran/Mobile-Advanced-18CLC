@@ -8,6 +8,8 @@ import 'Authentication/ForgotPassword/OtpVerify.dart';
 import 'Courses/CourseDetail.dart';
 import 'Courses/ListCourses.dart';
 import 'User/Teacher/ListTeachers.dart';
+import 'User/Teacher/TeacherSchedule.dart';
+import 'User/Teacher/doctor_model.dart';
 import 'User/UserAppSettings.dart';
 import 'User/UserProfile.dart';
 
@@ -21,8 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
           primaryColor: Color.fromRGBO(58, 66, 86, 1.0), fontFamily: 'Raleway'),
-      home: ListTeachersScreen(title: 'Lessons'),
-      // home: DetailPage(),
+      home: DetailScreen(),
     );
   }
 }
