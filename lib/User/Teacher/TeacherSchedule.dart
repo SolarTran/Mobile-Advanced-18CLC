@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+class TeacherSchedule extends StatefulWidget {
+  const TeacherSchedule({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -10,7 +10,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<TeacherSchedule> {
   @override
   Widget build(BuildContext context) {
     return SfCalendar(
@@ -24,16 +24,15 @@ class _MyHomePageState extends State<MyHomePage> {
 List<Appointment> getAppointments() {
   List<Appointment> meetings = <Appointment>[];
   final DateTime today = DateTime.now();
-  final DateTime startTime =
-  DateTime(today.year, today.month, today.day, 9, 0, 0);
-  final DateTime endTime = startTime.add(const Duration(hours: 2));
+  final DateTime startTime = DateTime(today.year, today.month, today.day, 9, 0, 0);
+  final DateTime endTime = startTime.add(const Duration(hours: 1));
 
   meetings.add(Appointment(
       startTime: startTime,
       endTime: endTime,
       subject: 'Board Meeting',
       color: Colors.blue,
-      recurrenceRule: 'FREQ=DAILY;COUNT=10',
+      recurrenceRule: 'FREQ=DAILY;COUNT=1',
       isAllDay: false));
 
   return meetings;

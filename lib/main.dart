@@ -8,7 +8,9 @@ import 'Authentication/ForgotPassword/OtpVerify.dart';
 import 'Courses/CourseDetail.dart';
 import 'Courses/ListCourses.dart';
 import 'User/Teacher/ListTeachers.dart';
+import 'User/Teacher/TeacherBookingDetails.dart';
 import 'User/Teacher/TeacherDetail.dart';
+import 'User/Teacher/TeacherSchedule.dart';
 import 'User/Teacher/doctor_model.dart';
 import 'User/UserAppSettings.dart';
 import 'User/UserProfile.dart';
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: SingleHotel(),
     );
   }
 }
