@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mobile/Authentication/signup.dart';
+import 'package:mobile/Courses/ListCourses.dart';
 
 class LoginWidget extends StatelessWidget {
   const LoginWidget({Key? key}) : super(key: key);
@@ -119,16 +121,22 @@ class LoginWidget extends StatelessWidget {
                                   Color(0xFFE94057),
                                   Color(0xFFF27121),
                                 ])),
-                        child: const Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: Text(
-                            'Login',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
+                        child: SizedBox(
+                          child: TextButton(
+                              child: const Text('Login',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+
+                              ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ListCoursesWidget()),
+                              );
+                            },
+                          )),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -146,16 +154,21 @@ class LoginWidget extends StatelessWidget {
                                   Color(0xFFE94057),
                                   Color(0xFFF27121),
                                 ])),
-                        child: const Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(
+                        child: SizedBox(
+                          child: TextButton(
+                            onPressed: (){
+                              Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => const SignUpWidget()),
+                              );
+                            },
+                            child: const Text(
+                              'Sign Up',
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold),
-                          ),
-                        ),
+                            ),
+                          )),
                       ),
                     ),
                   ],

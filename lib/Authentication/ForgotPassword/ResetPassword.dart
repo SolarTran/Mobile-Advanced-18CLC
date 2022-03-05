@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mobile/Authentication/login.dart';
 
 class ResetPasswordWidget extends StatelessWidget {
   const ResetPasswordWidget({Key? key}) : super(key: key);
@@ -22,7 +23,9 @@ class ResetPasswordWidget extends StatelessWidget {
                     TextButton.icon(
                       icon: const Icon(Icons.arrow_back),
                       label: const Text('Back'),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       style: TextButton.styleFrom (
                           textStyle: const TextStyle(fontSize: 20),
                           padding: const EdgeInsets.fromLTRB(10, 0, 0, 10)
@@ -117,16 +120,21 @@ class ResetPasswordWidget extends StatelessWidget {
                                 ]
                             )
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: Text(
+                        child: SizedBox(
+                          child: TextButton(
+                            child: const Text(
                             'Reset Password',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold),
                           ),
-                        ),
+                            onPressed: (){
+                              Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => const LoginWidget()),
+                              );
+                            },
+                        ))
                       ),
                     )
                   ],

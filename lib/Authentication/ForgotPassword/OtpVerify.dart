@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mobile/Authentication/ForgotPassword/ResetPassword.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 
 class Button extends StatelessWidget {
@@ -145,7 +146,11 @@ class OtpVerificationBody extends StatelessWidget {
             Button(
               size: size,
               text: "Continue",
-              press: () {},
+              press: () {
+                Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ResetPasswordWidget()),
+                );
+              },
             ),
           ],
         ),

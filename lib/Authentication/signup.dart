@@ -124,15 +124,20 @@ class SignUpWidget extends StatelessWidget {
                                   Color(0xFFE94057),
                                   Color(0xFFF27121),
                                 ])),
-                        child: const Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: Text(
-                            'Create',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
+                        child: SizedBox(
+                          child: TextButton(
+                            child: const Text(
+                              'Create',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          )
+
                         ),
                       ),
                     ),

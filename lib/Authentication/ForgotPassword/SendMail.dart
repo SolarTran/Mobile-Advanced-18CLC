@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'OtpVerify.dart';
+
 class SendMailWidget extends StatelessWidget {
   const SendMailWidget({Key? key}) : super(key: key);
 
@@ -22,7 +24,9 @@ class SendMailWidget extends StatelessWidget {
                   TextButton.icon(
                     icon: const Icon(Icons.arrow_back),
                     label: const Text('Back'),
-                    onPressed: () {},)
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },)
                 ]
               ),
               const SizedBox(height: 20),
@@ -85,16 +89,21 @@ class SendMailWidget extends StatelessWidget {
                                   Color(0xFFE94057),
                                   Color(0xFFF27121),
                                 ])),
-                        child: const Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: Text(
+                        child: SizedBox(
+                          child: TextButton(
+                          child: const Text(
                             'Request OTP',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold),
                           ),
-                        ),
+                            onPressed: (){
+                              Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => const VerifyOtpScreen()),
+                              );
+                            },
+                        ))
                       ),
                     ),
                   ],
