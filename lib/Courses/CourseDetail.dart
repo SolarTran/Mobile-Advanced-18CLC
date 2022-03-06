@@ -19,19 +19,25 @@ class CourseDetailWidget extends StatelessWidget {
         ),
         child: Column(
           children: <Widget>[
+            const SizedBox(height: 30,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: (){
+                    Navigator.pop(context);
+                  },
+                ),
+                SvgPicture.asset("assets/icons/more-vertical.svg"),
+              ],
+            ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, top: 50, right: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      SvgPicture.asset("assets/icons/arrow-left.svg"),
-                      SvgPicture.asset("assets/icons/more-vertical.svg"),
-                    ],
-                  ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 25),
                   ClipPath(
                     clipper: BestSellerClipper(),
                     child: Container(

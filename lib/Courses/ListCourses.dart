@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mobile/Courses/CourseDetail.dart';
 import 'config.dart';
 
 class ListCoursesWidget extends StatelessWidget {
@@ -80,19 +81,20 @@ class ListCoursesWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            categories[index].name,
-                            style: kTitleTextStyle,
-                          ),
+                          Text(categories[index].name, style: kTitleTextStyle),
                           Text(
                             '${categories[index].numOfCourses} Lessons',
-                            style: TextStyle(
-                              color: kTextColor.withOpacity(.5),
-                            ),
+                            style: TextStyle(color: kTextColor.withOpacity(.5)),
                           )
                         ],
                       ),
                     ),
+                    onTap:(){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CourseDetailWidget()),
+                      );
+                    },
                   );
                 },
                 staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
