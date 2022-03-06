@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mobile/Authentication/ForgotPassword/SendMail.dart';
 import 'package:mobile/Authentication/signup.dart';
 import 'package:mobile/Courses/ListCourses.dart';
 
 class LoginWidget extends StatelessWidget {
   const LoginWidget({Key? key}) : super(key: key);
-
-  void click() {}
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +57,10 @@ class LoginWidget extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 25),
-                    Container(
+                    const SizedBox(
                       width: 260,
                       height: 60,
-                      child: const TextField(
+                      child: TextField(
                         decoration: InputDecoration(
                             suffix: Icon(
                               FontAwesomeIcons.envelope,
@@ -75,10 +74,10 @@ class LoginWidget extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Container(
+                    const SizedBox(
                       width: 260,
                       height: 60,
-                      child: const TextField(
+                      child: TextField(
                         obscureText: true,
                         decoration: InputDecoration(
                             suffix: Icon(
@@ -98,13 +97,17 @@ class LoginWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextButton(
-                            onPressed: click,
+                            onPressed: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const SendMailWidget())
+                              );
+                            },
                             child: const Text(
                               "Forget Password?",
                               style: TextStyle(color: Colors.deepOrange),
                             ),
-                          )
-                        ],
+                          )],
                       ),
                     ),
                     GestureDetector(
@@ -128,7 +131,6 @@ class LoginWidget extends StatelessWidget {
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold),
-
                               ),
                             onPressed: () {
                               Navigator.push(
@@ -173,8 +175,7 @@ class LoginWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
-            ],
+              )],
           ),
         ),
       ),

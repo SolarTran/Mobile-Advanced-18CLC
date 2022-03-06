@@ -158,8 +158,7 @@ class CourseDetailWidget extends StatelessWidget {
                                 color: const Color(0xFFFFEDEE),
                                 borderRadius: BorderRadius.circular(40),
                               ),
-                              child: SvgPicture.asset(
-                                  "assets/icons/shopping-bag.svg"),
+                              child: SvgPicture.asset("assets/icons/shopping-bag.svg")
                             ),
                             const SizedBox(width: 20),
                             Expanded(
@@ -178,8 +177,7 @@ class CourseDetailWidget extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                            )
-                          ],
+                            )],
                         ),
                       ),
                     ),
@@ -272,8 +270,6 @@ class BestSellerClipper extends CustomClipper<Path> {
   }
 
   @override
-  bool shouldReclip(CustomClipper oldClipper) {
-    return false;
-  }
+  bool shouldReclip(CustomClipper oldClipper) {return false;}
 }
 

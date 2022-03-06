@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:mobile/User/UserAppSettings.dart';
 import 'UserProfileScreenConfiguration.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -29,29 +30,30 @@ class _ProfilePageState extends State<UserProfile> {
       body: Stack(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.only(top: 20, right: 10),
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 10, right: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const AppBarButton(
-                        icon: Icons.arrow_back,
+                      IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                       ),
                       SvgPicture.asset("assets/icons/menu.svg"),
                     ],
                   ),
                 ),
                 const AvatarImage(),
-                const SizedBox(
-                  height: 15,
-                ),
+                const SizedBox(height: 15),
                 const SocialIcons(),
                 const SizedBox(height: 5),
                 const Text(
-                  'chromicle',
+                  'User',
                   style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w700,
@@ -211,42 +213,45 @@ class ProfileListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 55,
-      margin: const EdgeInsets.symmetric(
-        horizontal: 10,
-      ).copyWith(
-        bottom: 20,
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.grey.shade300,
-      ),
-      child: Row(
-        children: <Widget>[
-          Icon(
-            icon,
-            size: 25,
-          ),
-          const SizedBox(width: 15),
-          Text(
-            text,
-            style: kTitleTextStyle.copyWith(
-                fontWeight: FontWeight.w500,
-                fontFamily: "Poppins"
+    return GestureDetector(
+      onTap: (){
+        if(text == 'Settings'){
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const UserAppSettingsScreen())
+          );
+        }
+      },
+      child:Container(
+        height: 55,
+        margin: const EdgeInsets.symmetric(
+          horizontal: 10,
+        ).copyWith(
+          bottom: 20,
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: Colors.grey.shade300,
+        ),
+        child: Row(
+          children: <Widget>[
+            Icon(icon, size: 25),
+            const SizedBox(width: 15),
+            Text(text,
+              style: kTitleTextStyle.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontFamily: "Poppins"
+              ),
             ),
-          ),
-          const Spacer(),
-          if (hasNavigation)
-            const Icon(
-              LineAwesomeIcons.angle_right,
-              size: 25,
-            ),
-        ],
-      ),
+            const Spacer(),
+            if (hasNavigation)
+              const Icon(LineAwesomeIcons.angle_right, size: 25),
+          ],
+        ),
+      )
     );
   }
 }
@@ -257,35 +262,38 @@ class ProfileListItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView(
-        children: const <Widget>[
-          ProfileListItem(
-            icon: LineAwesomeIcons.user_shield,
-            text: 'Privacy',
-          ),
-          ProfileListItem(
-            icon: LineAwesomeIcons.history,
-            text: 'Purchase History',
-          ),
-          ProfileListItem(
-            icon: LineAwesomeIcons.question_circle,
-            text: 'Help & Support',
-          ),
-          ProfileListItem(
-            icon: LineAwesomeIcons.cog,
-            text: 'Settings',
-          ),
-          ProfileListItem(
-            icon: LineAwesomeIcons.user_plus,
-            text: 'Invite a Friend',
-          ),
-          ProfileListItem(
-            icon: LineAwesomeIcons.alternate_sign_out,
-            text: 'Logout',
-            hasNavigation: false,
-          ),
-        ],
-      ),
+      child:Padding(
+        padding: const EdgeInsets.only(left: 10),
+        child: ListView(
+          children: const <Widget>[
+            ProfileListItem(
+              icon: LineAwesomeIcons.user_shield,
+              text: 'Privacy',
+            ),
+            ProfileListItem(
+              icon: LineAwesomeIcons.history,
+              text: 'Purchase History',
+            ),
+            ProfileListItem(
+              icon: LineAwesomeIcons.question_circle,
+              text: 'Help & Support',
+            ),
+            ProfileListItem(
+              icon: LineAwesomeIcons.cog,
+              text: 'Settings',
+            ),
+            ProfileListItem(
+              icon: LineAwesomeIcons.user_plus,
+              text: 'Invite a Friend',
+            ),
+            ProfileListItem(
+              icon: LineAwesomeIcons.alternate_sign_out,
+              text: 'Logout',
+              hasNavigation: false,
+            ),
+          ],
+        ),
+      )
     );
   }
 }

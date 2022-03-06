@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mobile/Courses/CourseDetail.dart';
+import 'package:mobile/User/UserProfile.dart';
 import 'config.dart';
 
 class ListCoursesWidget extends StatelessWidget {
@@ -19,7 +20,14 @@ class ListCoursesWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 SvgPicture.asset("assets/icons/menu.svg"),
-                Image.asset("assets/images/2.png"),
+                IconButton(
+                  icon: Image.asset("assets/images/2.png"),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context)=>const UserProfileWidget())
+                    );
+                  }),
               ],
             ),
             const SizedBox(height: 30),
