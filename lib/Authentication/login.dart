@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile/Authentication/ForgotPassword/SendMail.dart';
 import 'package:mobile/Authentication/signup.dart';
 import 'package:mobile/Courses/ListCourses.dart';
+import 'package:mobile/Dashboard.dart';
 
 class LoginWidget extends StatelessWidget {
   const LoginWidget({Key? key}) : super(key: key);
@@ -135,7 +136,7 @@ class LoginWidget extends StatelessWidget {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const ListCoursesWidget()),
+                                MaterialPageRoute(builder: (context) => const Dashboard()),
                               );
                             },
                           )),

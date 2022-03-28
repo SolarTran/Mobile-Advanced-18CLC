@@ -3,10 +3,7 @@ import 'light_color.dart';
 
 class RatingStarWidget extends StatefulWidget {
   final double rating;
-  RatingStarWidget({
-    Key? key,
-    required this.rating,
-  }) : super(key: key);
+  const RatingStarWidget({Key? key, required this.rating,}) : super(key: key);
 
   @override
   _RatingStarState createState() => _RatingStarState();
@@ -30,17 +27,15 @@ class _RatingStarState extends State<RatingStarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TweenAnimationBuilder<double>(
-        tween: Tween<double>(begin: 0, end: 5),
-        duration: Duration(milliseconds: 500),
-        builder: (context, value, child) {
-          return Wrap(
-            children: Iterable.generate(value.toInt(), (index) => _start(index))
-                .toList(),
-          );
-        },
-      ),
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0, end: 5),
+      duration: const Duration(milliseconds: 500),
+      builder: (context, value, child) {
+        return Wrap(
+          children: Iterable.generate(value.toInt(), (index) => _start(index))
+              .toList(),
+        );
+      },
     );
   }
 }

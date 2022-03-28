@@ -1,4 +1,5 @@
 import 'package:flutter_svg/svg.dart';
+import 'package:mobile/User/Teacher/TeacherDetail.dart';
 import 'config.dart';
 import 'lesson.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class ListTeachersScreen extends StatefulWidget {
 
 class _ListTeachersScreenState extends State<ListTeachersScreen> {
   late List lessons;
-
+  final List<String> entries = <String>['PETS', 'IETLS', 'TOEIC'];
   @override
   void initState() {
     lessons = getLessons();
@@ -40,60 +41,60 @@ class _ListTeachersScreenState extends State<ListTeachersScreen> {
             style: const TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
           subtitle: Row(
             children: <Widget>[
               Expanded(
                 flex: 4,
-                child: Container(
-                    child: Text(lesson.level,
-                        style: TextStyle(color: Colors.white))),
+                child: Text(lesson.level,
+                    style: const TextStyle(color: Colors.white)),
               )
             ],
           ),
-          trailing:
-              Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
-          onTap: () {},
+          trailing: const Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context)=>const DetailScreen())
+            );
+          },
         );
 
     Card makeCard(Lesson lesson) => Card(
-          margin: EdgeInsets.only(bottom: 10.0),
+          margin: const EdgeInsets.only(bottom: 10.0),
           child: Container(
-            decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+            decoration: const BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
             child: makeListTile(lesson),
           ),
         );
 
-    final makeBody = Container(
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: lessons.length,
-        itemBuilder: (BuildContext context, int index) {
-          return makeCard(lessons[index]);
-        },
-      ),
+    final makeBody = ListView.builder(
+      padding: EdgeInsets.zero,
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: lessons.length,
+      itemBuilder: (BuildContext context, int index) {
+        return makeCard(lessons[index]);
+      },
     );
 
-    final listFilter = Container(
-        child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: 4,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                width: 150,
-                height: 5.0,
-                margin: const EdgeInsets.only(right: 20.0),
-                child: OutlinedButton(
-                  onPressed: null,
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                    ),
-                  child: const Text("Button text"),
-              ));
-            }));
+    final listFilter = ListView.builder(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        itemCount: 4,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            width: 150,
+            height: 5.0,
+            margin: const EdgeInsets.only(right: 20.0),
+            child: OutlinedButton(
+              onPressed: null,
+              style: OutlinedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+                ),
+              child: Text(entries[index]),
+          ));
+        });
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -109,9 +110,10 @@ class _ListTeachersScreenState extends State<ListTeachersScreen> {
                     Image.asset("assets/images/2.png"),
                   ],
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 10),
                 const Text("Hey Alex,", style: kHeadingextStyle),
                 const Text("Find a teacher", style: kSubheadingextStyle),
+                const SizedBox(height: 10),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   height: 60,
@@ -134,13 +136,10 @@ class _ListTeachersScreenState extends State<ListTeachersScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 30),
-                Container(
-                  height: 30,
-                  child:listFilter,
-                ),
-                const SizedBox(height: 10),
-                Expanded(child: makeBody)
+                const SizedBox(height: 20),
+                SizedBox(height: 30, child:listFilter),
+                const SizedBox(height: 20),
+                Flexible(child: makeBody)
               ],
             )));
   }

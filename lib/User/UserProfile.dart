@@ -30,46 +30,31 @@ class _ProfilePageState extends State<UserProfile> {
       body: Stack(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 20, right: 10),
+            padding: const EdgeInsets.only(top: 40, right: 10),
             child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, right: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      SvgPicture.asset("assets/icons/menu.svg"),
-                    ],
-                  ),
-                ),
-                const AvatarImage(),
-                const SizedBox(height: 15),
-                const SocialIcons(),
-                const SizedBox(height: 5),
-                const Text(
+              children: const <Widget>[
+                AvatarImage(),
+                SizedBox(height: 15),
+                SocialIcons(),
+                SizedBox(height: 5),
+                Text(
                   'User',
                   style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w700,
                       fontFamily: "Poppins"),
                 ),
-                const Text(
+                Text(
                   '@amFOSS',
                   style: TextStyle(fontWeight: FontWeight.w300),
                 ),
-                const SizedBox(height: 5),
-                const Text(
+                SizedBox(height: 5),
+                Text(
                   'Mobile App Developer and Open source enthusiastic',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 14, fontFamily: "Poppins"),
                 ),
-                const ProfileListItems(),
+                ProfileListItems(),
               ],
             ),
           )

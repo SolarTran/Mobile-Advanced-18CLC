@@ -103,13 +103,13 @@ class ProgressPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) async {
     var center1 = Offset(size.width / 2, size.height / 2);
-    Paint active = new Paint()
+    Paint active = Paint()
       ..color = activeColor
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
       ..strokeWidth = 7;
 
-    Paint inActive = new Paint()
+    Paint inActive = Paint()
       ..color = backgroundColor
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
@@ -127,18 +127,4 @@ class ProgressPainter extends CustomPainter {
   }
 }
 
-class LinearPointCurve extends Curve {
-  final double pIn;
-  final double pOut;
 
-  LinearPointCurve(this.pIn, this.pOut);
-
-  @override
-  double transform(double x) {
-    // Just a simple bit of linear interpolation math
-    final lowerScale = pOut / pIn;
-    final upperScale = (1.0 - pOut) / (1.0 - pIn);
-    final upperOffset = 1.0 - upperScale;
-    return x < pIn ? x * lowerScale : x * upperScale + upperOffset;
-  }
-}

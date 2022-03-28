@@ -4,7 +4,7 @@ import 'light_color.dart';
 import 'text_styles.dart';
 import 'theme.dart';
 import 'rating_star_widget.dart';
-import 'extention.dart';
+import 'extension.dart';
 
 class DetailScreen extends StatefulWidget {
   const DetailScreen({Key? key,}) : super(key: key);
@@ -82,11 +82,9 @@ class _DetailPageState extends State<DetailScreen> {
                                 color: Theme.of(context).primaryColor,
                               ),
                               const Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: RatingStarWidget(
-                                  rating: 5,
-                                ),
+                              const Padding(
+                                padding: EdgeInsets.only(right: 10),
+                                child: RatingStarWidget(rating: 5),
                               ),
                             ],
                           ),

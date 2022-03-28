@@ -151,7 +151,7 @@ class _CalendarPageState extends State<CalendarPage> {
             decoration: BoxDecoration(
                 border: Border.all(width: 1, color: Colors.grey[300]!),
                 borderRadius: BorderRadius.circular(20)),
-            margin: const EdgeInsets.only(right: 10, left: 30),
+            margin: const EdgeInsets.only(right: 25, left: 25),
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

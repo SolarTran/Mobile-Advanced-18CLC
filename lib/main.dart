@@ -1,19 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/Authentication/ForgotPassword/OtpVerify.dart';
 import 'Authentication/login.dart';
-import 'Authentication/signup.dart';
-import 'Authentication/ForgotPassword/SendMail.dart';
-import 'Authentication/ForgotPassword/ResetPassword.dart';
-import 'Authentication/ForgotPassword/OtpVerify.dart';
-import 'Courses/CourseDetail.dart';
-import 'Courses/ListCourses.dart';
-import 'User/Teacher/ListTeachers.dart';
 import 'User/Teacher/TeacherBookingDetails.dart';
-import 'User/Teacher/TeacherDetail.dart';
-import 'User/Teacher/TeacherSchedule.dart';
-import 'User/Teacher/doctor_model.dart';
-import 'User/UserAppSettings.dart';
-import 'User/UserProfile.dart';
 
 
 void main() {
@@ -21,6 +8,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginWidget(),
+      home:  LoginWidget(),
     );
   }
 }

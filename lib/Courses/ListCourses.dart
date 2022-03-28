@@ -7,7 +7,6 @@ import 'config.dart';
 
 class ListCoursesWidget extends StatelessWidget {
   const ListCoursesWidget({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,9 +16,8 @@ class ListCoursesWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                SvgPicture.asset("assets/icons/menu.svg"),
                 IconButton(
                   icon: Image.asset("assets/images/2.png"),
                   onPressed: () {
@@ -30,11 +28,10 @@ class ListCoursesWidget extends StatelessWidget {
                   }),
               ],
             ),
-            const SizedBox(height: 30),
             const Text("Hey Alex,", style: kHeadingextStyle),
             const Text("Find a course you want to learn", style: kSubheadingextStyle),
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 30),
+              margin: const EdgeInsets.symmetric(vertical: 10),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               height: 60,
               width: double.infinity,
@@ -108,6 +105,7 @@ class ListCoursesWidget extends StatelessWidget {
                 staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
               ),
             ),
+
           ],
         ),
       ),
