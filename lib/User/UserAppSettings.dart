@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../Authentication/login.dart';
+
 class UserAppSettingsScreen extends StatefulWidget {
   const UserAppSettingsScreen({Key? key}) : super(key: key);
 
@@ -85,7 +87,12 @@ class _SettingsScreenState extends State<UserAppSettingsScreen> {
                   settingsGroupTitle: "Account",
                   items: [
                     SettingsItem(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => const LoginWidget()),
+                                (route) => false
+                        );
+                      },
                       icons: Icons.exit_to_app_rounded,
                       title: "Sign Out",
                     ),

@@ -14,52 +14,47 @@ class ListTeachersScreen extends StatefulWidget {
 }
 
 class _ListTeachersScreenState extends State<ListTeachersScreen> {
-  late List lessons;
-  final List<String> entries = <String>['PETS', 'IETLS', 'TOEIC'];
+  late List teachers;
+  final List<String> filters = <String>['PETS', 'IETLS', 'TOEIC', 'TOEFL'];
   @override
   void initState() {
-    lessons = getLessons();
+    teachers = getTeachers();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    ListTile makeListTile(Lesson lesson) => ListTile(
+    ListTile makeListTile(Teacher lesson) => ListTile(
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           leading: Container(
               padding: const EdgeInsets.only(right: 12.0),
               decoration: const BoxDecoration(
-                border: Border(
-                    right: BorderSide(width: 1.0, color: Colors.white24)),
+                border: Border(right: BorderSide(width: 1.0, color: Colors.white24)),
               ),
               child: const CircleAvatar(
                 backgroundImage: AssetImage('assets/images/1.jpg'),
               )),
           title: Text(
-            lesson.title,
-            style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold),
-          ),
+            lesson.name,
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
           subtitle: Row(
             children: <Widget>[
               Expanded(
                 flex: 4,
-                child: Text(lesson.level,
-                    style: const TextStyle(color: Colors.white)),
-              )
+                child: Text(lesson.tag, style: const TextStyle(color: Colors.white)))
             ],
           ),
           trailing: const Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
           onTap: () {
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context)=>const DetailScreen())
+                MaterialPageRoute(builder: (context) => const DetailScreen())
             );
           },
         );
 
-    Card makeCard(Lesson lesson) => Card(
+    Card makeCard(Teacher lesson) => Card(
           margin: const EdgeInsets.only(bottom: 10.0),
           child: Container(
             decoration: const BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
@@ -71,16 +66,16 @@ class _ListTeachersScreenState extends State<ListTeachersScreen> {
       padding: EdgeInsets.zero,
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: lessons.length,
+      itemCount: teachers.length,
       itemBuilder: (BuildContext context, int index) {
-        return makeCard(lessons[index]);
+        return makeCard(teachers[index]);
       },
     );
 
     final listFilter = ListView.builder(
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
-        itemCount: 4,
+        itemCount: filters.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             width: 150,
@@ -92,7 +87,7 @@ class _ListTeachersScreenState extends State<ListTeachersScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
                 ),
-              child: Text(entries[index]),
+              child: Text(filters[index]),
           ));
         });
 
@@ -145,56 +140,27 @@ class _ListTeachersScreenState extends State<ListTeachersScreen> {
   }
 }
 
-List getLessons() {
+List getTeachers() {
   return [
-    Lesson(
-        title: "Introduction to Driving",
-        level: "Beginner",
-        indicatorValue: 0.33,
-        price: 20,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Lesson(
-        title: "Observation at Junctions",
-        level: "Beginner",
-        indicatorValue: 0.33,
-        price: 50,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Lesson(
-        title: "Reverse parallel Parking",
-        level: "Intermidiate",
-        indicatorValue: 0.66,
-        price: 30,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Lesson(
-        title: "Reversing around the corner",
-        level: "Intermidiate",
-        indicatorValue: 0.66,
-        price: 30,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Lesson(
-        title: "Incorrect Use of Signal",
-        level: "Advanced",
-        indicatorValue: 1.0,
-        price: 50,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Lesson(
-        title: "Engine Challenges",
-        level: "Advanced",
-        indicatorValue: 1.0,
-        price: 50,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Lesson(
-        title: "Self Driving Car",
-        level: "Advanced",
-        indicatorValue: 1.0,
-        price: 50,
-        content:
-            "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed.  ")
+    Teacher(
+        name: "Kathy Huỳnh",
+        tag: "Beginner",
+    ),
+    Teacher(
+        name: "Nhi Lam",
+        tag: "Beginner",
+    ),
+    Teacher(
+        name: "Albie Corpuz",
+        tag: "Intermidiate",
+    ),
+    Teacher(
+        name: "Jill Leano",
+        tag: "Intermidiate",
+    ),
+    Teacher(
+        name: "Caela",
+        tag: "Advanced",
+    ),
   ];
 }

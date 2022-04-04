@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:mobile/Authentication/login.dart';
 import 'package:mobile/User/UserAppSettings.dart';
 import 'UserProfileScreenConfiguration.dart';
 import 'package:flutter_svg/svg.dart';
@@ -38,7 +39,7 @@ class _ProfilePageState extends State<UserProfile> {
                 SocialIcons(),
                 SizedBox(height: 5),
                 Text(
-                  'User',
+                  'Sang',
                   style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w700,
@@ -54,6 +55,7 @@ class _ProfilePageState extends State<UserProfile> {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 14, fontFamily: "Poppins"),
                 ),
+                SizedBox(height: 5),
                 ProfileListItems(),
               ],
             ),
@@ -204,6 +206,12 @@ class ProfileListItem extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const UserAppSettingsScreen())
+          );
+        }
+        if(text == 'Logout'){
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const LoginWidget()),
+            (route) => false
           );
         }
       },

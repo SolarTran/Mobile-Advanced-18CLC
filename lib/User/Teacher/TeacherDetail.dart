@@ -7,7 +7,7 @@ import 'rating_star_widget.dart';
 import 'extension.dart';
 
 class DetailScreen extends StatefulWidget {
-  const DetailScreen({Key? key,}) : super(key: key);
+  const DetailScreen({Key? key}) : super(key: key);
 
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -20,15 +20,18 @@ class _DetailPageState extends State<DetailScreen> {
   }
 
   Widget _appbar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        BackButton(color: Theme.of(context).primaryColor),
-        IconButton(
-          icon: const Icon(Icons.favorite, color: Colors.red),
-          onPressed: () {
-          },
-        )],
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          BackButton(color: Theme.of(context).primaryColor),
+          IconButton(
+            icon: const Icon(Icons.favorite, color: Colors.red),
+            onPressed: () {
+            },
+          )],
+      ),
     );
   }
 
@@ -44,7 +47,11 @@ class _DetailPageState extends State<DetailScreen> {
         bottom: false,
         child: Stack(
           children: <Widget>[
-            Image.asset('assets/images/photography.png'),
+            Image.asset(
+                'assets/images/1.jpg',
+              width: 980,
+              height: 300,
+            ),
             DraggableScrollableSheet(
               maxChildSize: .8,
               initialChildSize: .6,

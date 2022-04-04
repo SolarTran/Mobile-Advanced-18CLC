@@ -11,7 +11,7 @@ class ListCoursesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(left: 20, top: 50, right: 20),
+        padding: const EdgeInsets.only(left: 20, top: 30, right: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -31,7 +31,7 @@ class ListCoursesWidget extends StatelessWidget {
             const Text("Hey Alex,", style: kHeadingextStyle),
             const Text("Find a course you want to learn", style: kSubheadingextStyle),
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              margin: const EdgeInsets.symmetric(vertical: 5),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               height: 60,
               width: double.infinity,
@@ -63,12 +63,12 @@ class ListCoursesWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             Expanded(
               child: StaggeredGridView.countBuilder(
                 padding: const EdgeInsets.all(0),
                 crossAxisCount: 2,
-                itemCount: 4,
+                itemCount: categories.length,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
                 itemBuilder: (context, index) {
@@ -127,11 +127,11 @@ List<Category> categories = categoriesData
 
 var categoriesData = [
   {"name": "Marketing", 'courses': 17, 'image': "assets/images/marketing.png"},
+  {"name": "Marketing", 'courses': 17, 'image': "assets/images/marketing.png"},
   {"name": "UX Design", 'courses': 25, 'image': "assets/images/ux_design.png"},
-  {
-    "name": "Photography",
-    'courses': 13,
-    'image': "assets/images/photography.png"
-  },
+  {"name": "UX Design", 'courses': 25, 'image': "assets/images/ux_design.png"},
+  {"name": "Photography", 'courses': 13, 'image': "assets/images/photography.png"},
+  {"name": "Photography", 'courses': 13, 'image': "assets/images/photography.png"},
+  {"name": "Business", 'courses': 17, 'image': "assets/images/business.png"},
   {"name": "Business", 'courses': 17, 'image': "assets/images/business.png"},
 ];
