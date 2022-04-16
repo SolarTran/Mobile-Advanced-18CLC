@@ -1,13 +1,61 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile/Authentication/ForgotPassword/SendMail.dart';
 import 'package:mobile/Authentication/signup.dart';
-import 'package:mobile/Courses/ListCourses.dart';
 import 'package:mobile/Dashboard.dart';
+import '../User/UserModel.dart';
 
-class LoginWidget extends StatelessWidget {
+class LoginWidget extends StatefulWidget {
   const LoginWidget({Key? key}) : super(key: key);
+
+
+  @override
+  _LoginWidgetState createState() => _LoginWidgetState();
+}
+
+
+class _LoginWidgetState extends State<LoginWidget> {
+
+  User user = User();
+
+  String? validateUsername (String? username) {
+    if (username == null || username.isEmpty) {
+      return 'Email cannot be empty';
+    } else {
+      return null;
+    }
+  }
+
+  String? validatePassword (String? password) {
+    if (password == null || password.isEmpty) {
+      return 'Password cannot be empty';
+    } else {
+      return null;
+    }
+  }
+
+  void saveUsername(String? username) {
+    user.username = username!;
+  }
+
+  void savePassword(String? password) {
+    user.password = password!;
+  }
+
+  final formStateKey = GlobalKey<FormState>();
+
+  void submitForm() {
+    if (formStateKey.currentState?.validate() != null) {
+      formStateKey.currentState!.save();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const Dashboard()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,39 +105,50 @@ class LoginWidget extends StatelessWidget {
                         fontSize: 15,
                       ),
                     ),
-                    const SizedBox(height: 25),
-                    const SizedBox(
-                      width: 260,
-                      height: 60,
-                      child: TextField(
-                        decoration: InputDecoration(
-                            suffix: Icon(
-                              FontAwesomeIcons.envelope,
-                              color: Colors.red,
+                    Form(
+                      key: formStateKey,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 25),
+                          SizedBox(
+                            width: 260,
+                            height: 60,
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                  suffix: Icon(
+                                    FontAwesomeIcons.envelope,
+                                    color: Colors.red,
+                                  ),
+                                  labelText: "Email Address",
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                  )),
+                              validator: validateUsername,
+                              onSaved: saveUsername,
                             ),
-                            labelText: "Email Address",
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                            )),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const SizedBox(
-                      width: 260,
-                      height: 60,
-                      child: TextField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            suffix: Icon(
-                              FontAwesomeIcons.eyeSlash,
-                              color: Colors.red,
+                          ),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            width: 260,
+                            height: 60,
+                            child: TextFormField(
+                              obscureText: true,
+                              decoration: const InputDecoration(
+                                  suffix: Icon(
+                                    FontAwesomeIcons.eyeSlash,
+                                    color: Colors.red,
+                                  ),
+                                  labelText: "Password",
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                  )),
+                              validator: validatePassword,
+                              onSaved: savePassword,
                             ),
-                            labelText: "Password",
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                            )),
+                          ),
+                        ],
                       ),
                     ),
                     Padding(
@@ -133,12 +192,7 @@ class LoginWidget extends StatelessWidget {
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold),
                               ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const Dashboard()),
-                              );
-                            },
+                            onPressed: submitForm,
                           )),
                       ),
                     ),

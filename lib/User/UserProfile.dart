@@ -210,7 +210,7 @@ class ProfileListItem extends StatelessWidget {
         }
         if(text == 'Logout'){
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const LoginWidget()),
+            MaterialPageRoute(builder: (context) => LoginWidget()),
             (route) => false
           );
         }

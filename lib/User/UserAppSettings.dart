@@ -89,7 +89,7 @@ class _SettingsScreenState extends State<UserAppSettingsScreen> {
                     SettingsItem(
                       onTap: () {
                         Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => const LoginWidget()),
+                            MaterialPageRoute(builder: (context) => LoginWidget()),
                                 (route) => false
                         );
                       },
