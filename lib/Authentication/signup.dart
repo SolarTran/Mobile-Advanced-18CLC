@@ -2,8 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class SignUpWidget extends StatelessWidget {
+class SignUpWidget extends StatefulWidget {
   const SignUpWidget({Key? key}) : super(key: key);
+
+  @override
+  _SignUpWidgetState createState() => _SignUpWidgetState();
+}
+
+
+class _SignUpWidgetState extends State<SignUpWidget> {
+
+  String? validateUsername (String? username) {
+    if (username == null || username.isEmpty) {
+      return 'Email cannot be empty';
+    } else {
+      return null;
+    }
+  }
+
+  String? validatePassword (String? password) {
+    if (password == null || password.isEmpty) {
+      return 'Password cannot be empty';
+    } else {
+      return null;
+    }
+  }
+
+  String? validateConfirmPassword (String? confirmPassword) {
+    if (confirmPassword == null || confirmPassword.isEmpty) {
+      return 'Confirm password cannot be empty';
+    } else {
+      return null;
+    }
+  }
 
   void click() {}
 
@@ -57,11 +88,11 @@ class SignUpWidget extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Container(
+                    SizedBox(
                       width: 260,
                       height: 60,
-                      child: const TextField(
-                        decoration: InputDecoration(
+                      child: TextFormField(
+                        decoration: const InputDecoration(
                             suffix: Icon(
                               FontAwesomeIcons.envelope,
                               color: Colors.red,
@@ -71,15 +102,16 @@ class SignUpWidget extends StatelessWidget {
                               borderRadius:
                               BorderRadius.all(Radius.circular(8)),
                             )),
+                        validator: validateUsername,
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Container(
+                    SizedBox(
                       width: 260,
                       height: 60,
-                      child: const TextField(
+                      child: TextFormField(
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             suffix: Icon(
                               FontAwesomeIcons.eyeSlash,
                               color: Colors.red,
@@ -89,15 +121,16 @@ class SignUpWidget extends StatelessWidget {
                               borderRadius:
                               BorderRadius.all(Radius.circular(8)),
                             )),
+                        validator: validatePassword,
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Container(
+                    SizedBox(
                       width: 260,
                       height: 60,
-                      child: const TextField(
+                      child:  TextFormField(
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             suffix: Icon(
                               FontAwesomeIcons.eyeSlash,
                               color: Colors.red,
@@ -107,6 +140,7 @@ class SignUpWidget extends StatelessWidget {
                               borderRadius:
                               BorderRadius.all(Radius.circular(8)),
                             )),
+                        validator: validateConfirmPassword,
                       ),
                     ),
                     const SizedBox(height: 20),

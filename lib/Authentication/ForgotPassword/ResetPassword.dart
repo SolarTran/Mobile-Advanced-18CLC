@@ -2,8 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile/Authentication/login.dart';
 
-class ResetPasswordWidget extends StatelessWidget {
+class ResetPasswordWidget extends StatefulWidget {
   const ResetPasswordWidget({Key? key}) : super(key: key);
+
+  @override
+  _ResetPasswordState createState() => _ResetPasswordState();
+}
+
+class _ResetPasswordState extends State<ResetPasswordWidget> {
+
+  String? validatePassword (String? password) {
+    if (password == null || password.isEmpty) {
+      return 'Password cannot be empty';
+    } else {
+      return null;
+    }
+  }
+
+  String? validateConfirmPassword (String? confirmPassword) {
+    if (confirmPassword == null || confirmPassword.isEmpty) {
+      return 'Confirm password cannot be empty';
+    } else {
+      return null;
+    }
+  }
 
   void click() {}
 
@@ -62,11 +84,11 @@ class ResetPasswordWidget extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    const SizedBox(
+                    SizedBox(
                       width: 360,
                       height: 60,
-                      child: TextField(
-                        decoration: InputDecoration(
+                      child: TextFormField(
+                        decoration: const InputDecoration(
                             suffix: Icon(
                               FontAwesomeIcons.envelope,
                               color: Colors.red,
@@ -75,6 +97,7 @@ class ResetPasswordWidget extends StatelessWidget {
                               borderRadius:
                               BorderRadius.all(Radius.circular(20)),
                             )),
+                        validator: validatePassword,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -87,11 +110,11 @@ class ResetPasswordWidget extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    const SizedBox(
+                    SizedBox(
                       width: 360,
                       height: 60,
-                      child: TextField(
-                        decoration: InputDecoration(
+                      child: TextFormField(
+                        decoration: const InputDecoration(
                             suffix: Icon(
                               FontAwesomeIcons.envelope,
                               color: Colors.red,
@@ -100,6 +123,7 @@ class ResetPasswordWidget extends StatelessWidget {
                               borderRadius:
                               BorderRadius.all(Radius.circular(20)),
                             )),
+                        validator: validateConfirmPassword,
                       ),
                     ),
                     const SizedBox(height: 30,),
