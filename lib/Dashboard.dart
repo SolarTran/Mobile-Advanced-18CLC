@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/Courses/ListCourses.dart';
 import 'package:mobile/User/Student/StudentOverview.dart';
@@ -7,21 +9,29 @@ import 'package:mobile/User/UserAppSettings.dart';
 import 'package:mobile/User/UserProfile.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
-
+  const Dashboard({Key? key, required this.token}) : super(key: key);
+  final String token;
   @override
   State<Dashboard> createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    ListCoursesWidget(),
-    ListTeachersScreen(title: "title"),
-    HomePage(),
-    CalendarPage(),
-    UserProfileWidget()
-  ];
+
+  late String accessToken;
+  late final List<Widget> _widgetOptions;
+  @override
+  void initState() {
+    super.initState();
+    accessToken = widget.token;
+    _widgetOptions = <Widget>[
+      ListCoursesWidget(token: accessToken),
+      const ListTeachersScreen(title: "title"),
+      const HomePage(),
+      const CalendarPage(),
+      const UserProfileWidget()
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {

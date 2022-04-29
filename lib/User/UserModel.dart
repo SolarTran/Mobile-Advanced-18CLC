@@ -1,17 +1,35 @@
-class User {
-  late String username;
-  late String password;
-  late int role;
+import 'dart:convert';
 
+List<UserModel> userModelFromJson(String str) =>
+    List<UserModel>.from(json.decode(str).map((x) => UserModel.fromJson(x)));
+
+String userModelToJson(List<UserModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class UserModel {
+  UserModel({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.phone,
+  });
+
+  String id;
+  String name;
+  String email;
+  String phone;
+
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+    id: json["id"],
+    name: json["name"],
+    email: json["email"],
+    phone: json["phone"]
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "email": email,
+    "phone": phone,
+  };
 }
-
-var userData = [
-  {"username": "student1", 'password': 'P@ssw0rd1', 'role': 1},
-  {"username": "student2", 'password': 'P@ssw0rd2', 'role': 1},
-  {"username": "student3", 'password': 'P@ssw0rd3', 'role': 1},
-  {"username": "student4", 'password': 'P@ssw0rd4', 'role': 1},
-  {"username": "teacher1", 'password': 'P@ssw0rd5', 'role': 2},
-  {"username": "teacher2", 'password': 'P@ssw0rd6', 'role': 2},
-  {"username": "teacher3", 'password': 'P@ssw0rd7', 'role': 2},
-  {"username": "admin", 'password': 'P@ssw0rd8', 'role': 0},
-];

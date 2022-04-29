@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile/Authentication/ForgotPassword/SendMail.dart';
 import 'package:mobile/Authentication/signup.dart';
 import 'package:mobile/Dashboard.dart';
+import '../Service/API.dart';
 import '../User/UserModel.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -19,7 +20,10 @@ class LoginWidget extends StatefulWidget {
 
 class _LoginWidgetState extends State<LoginWidget> {
 
-  User user = User();
+  //UserModel user = UserModel();
+  late String token;
+  late String inputUsername;
+  late String inputPassword;
 
   String? validateUsername (String? username) {
     if (username == null || username.isEmpty) {
@@ -38,22 +42,25 @@ class _LoginWidgetState extends State<LoginWidget> {
   }
 
   void saveUsername(String? username) {
-    user.username = username!;
+    inputUsername = username!;
   }
 
   void savePassword(String? password) {
-    user.password = password!;
+    inputPassword = password!;
   }
 
   final formStateKey = GlobalKey<FormState>();
 
-  void submitForm() {
+  void submitForm() async {
     if (formStateKey.currentState?.validate() != null) {
       formStateKey.currentState!.save();
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const Dashboard()),
-      );
+      token = (await ApiService().getToken(inputUsername, inputPassword));
+      if(token != "") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Dashboard(token: token)),
+        );
+      }
     }
   }
 

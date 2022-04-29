@@ -2,11 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mobile/Courses/CourseDetail.dart';
+import 'package:mobile/Courses/CourseModel.dart';
 import 'package:mobile/User/UserProfile.dart';
+import '../Service/API.dart';
 import 'config.dart';
 
-class ListCoursesWidget extends StatelessWidget {
-  const ListCoursesWidget({Key? key}) : super(key: key);
+class ListCoursesWidget extends StatefulWidget {
+  const ListCoursesWidget({Key? key, required this.token}) : super(key: key);
+
+  final String token;
+
+  @override
+  _ListCoursesWidgetState createState() => _ListCoursesWidgetState();
+}
+
+
+class _ListCoursesWidgetState extends State<ListCoursesWidget> {
+
+  late String accessToken;
+
+  late List<CourseModel> courses = [];
+
+  @override
+  void initState() {
+    super.initState();
+    accessToken = widget.token;
+    _getCourses();
+  }
+
+  void _getCourses() async {
+    courses = (await ApiService().getCourse(accessToken));
+    Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +87,7 @@ class ListCoursesWidget extends StatelessWidget {
                 const Text("Courses", style: kTitleTextStyle),
                 Text(
                   "See All",
-                  style: kSubtitleTextSyule.copyWith(color: kBlueColor),
+                  style: kSubtitleTextStyle.copyWith(color: kBlueColor),
                 ),
               ],
             ),
@@ -68,36 +96,40 @@ class ListCoursesWidget extends StatelessWidget {
               child: StaggeredGridView.countBuilder(
                 padding: const EdgeInsets.all(0),
                 crossAxisCount: 2,
-                itemCount: categories.length,
+                itemCount: courses.length,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     child: Container(
                       padding: const EdgeInsets.all(20),
-                      height: index.isEven ? 200 : 240,
+                      height: 150,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         image: DecorationImage(
-                          image: AssetImage(categories[index].image),
+                          image: NetworkImage(courses[index].imageUrl),
                           fit: BoxFit.fill,
+                          opacity: 0.5
                         ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(categories[index].name, style: kTitleTextStyle),
-                          Text(
-                            '${categories[index].numOfCourses} Lessons',
-                            style: TextStyle(color: kTextColor.withOpacity(.5)),
-                          )
+                          Text(courses[index].name, style: const TextStyle(
+                            fontSize: 16,
+                            color: kTextColor,
+                            fontWeight: FontWeight.bold,
+                          )),
                         ],
                       ),
                     ),
                     onTap:(){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const CourseDetailWidget()),
+                        MaterialPageRoute(builder: (context) => CourseDetailWidget(
+                            courseId: courses[index].id,
+                            token: accessToken
+                        )),
                       );
                     },
                   );
@@ -113,25 +145,4 @@ class ListCoursesWidget extends StatelessWidget {
   }
 }
 
-class Category {
-  final String name;
-  final int numOfCourses;
-  final String image;
 
-  Category(this.name, this.numOfCourses, this.image);
-}
-
-List<Category> categories = categoriesData
-    .map((item) => Category(item['name'] as String, item['courses'] as int, item['image'] as String))
-    .toList();
-
-var categoriesData = [
-  {"name": "Marketing", 'courses': 17, 'image': "assets/images/marketing.png"},
-  {"name": "Marketing", 'courses': 17, 'image': "assets/images/marketing.png"},
-  {"name": "UX Design", 'courses': 25, 'image': "assets/images/ux_design.png"},
-  {"name": "UX Design", 'courses': 25, 'image': "assets/images/ux_design.png"},
-  {"name": "Photography", 'courses': 13, 'image': "assets/images/photography.png"},
-  {"name": "Photography", 'courses': 13, 'image': "assets/images/photography.png"},
-  {"name": "Business", 'courses': 17, 'image': "assets/images/business.png"},
-  {"name": "Business", 'courses': 17, 'image': "assets/images/business.png"},
-];

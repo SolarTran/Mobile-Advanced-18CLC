@@ -1,25 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mobile/Courses/CourseModel.dart';
+import '../Service/API.dart';
 import 'config.dart';
 
-class CourseDetailWidget extends StatelessWidget {
-  const CourseDetailWidget({Key? key}) : super(key: key);
+class CourseDetailWidget extends StatefulWidget {
+  const CourseDetailWidget({Key? key, required this.courseId, required this.token}) : super(key: key);
+
+  final String courseId;
+  final String token;
+
+  @override
+  _CourseDetailWidgetState createState() => _CourseDetailWidgetState();
+}
+
+class _CourseDetailWidgetState extends State<CourseDetailWidget> {
+
+  late String accessToken;
+  late String id;
+  late CourseModel courseDetail;
+  late List <TopicModel> topics;
+  @override
+  void initState() {
+    super.initState();
+    accessToken = widget.token;
+    id = widget.courseId;
+    _getCourseDetail();
+    _getTopics();
+  }
+
+  void _getCourseDetail() async {
+    courseDetail = (await ApiService().getCourseDetail(id, accessToken));
+    Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
+  }
+
+  void _getTopics() async {
+    topics = (await ApiService().getTopics(id, accessToken));
+    Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
-          color: Color(0xFFF5F4EF),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF5F4EF),
           image: DecorationImage(
-            image: AssetImage("assets/images/1.jpg"),
+            image: NetworkImage(courseDetail.imageUrl),
             alignment: Alignment.topCenter,
+            opacity: 0.5,
+            fit: BoxFit.fitHeight
           ),
         ),
         child: Column(
           children: <Widget>[
-            const SizedBox(height: 30,),
+            const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -28,8 +64,7 @@ class CourseDetailWidget extends StatelessWidget {
                   onPressed: (){
                     Navigator.pop(context);
                   },
-                ),
-                SvgPicture.asset("assets/icons/more-vertical.svg"),
+                )
               ],
             ),
             Padding(
@@ -53,29 +88,20 @@ class CourseDetailWidget extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const Text("Design Thinking", style: kHeadingextStyle),
+                  Text(courseDetail.name, style: kHeadingextStyle),
                   const SizedBox(height: 16),
-                  Row(
-                    children: <Widget>[
-                      SvgPicture.asset("assets/icons/person.svg"),
-                      const SizedBox(width: 5),
-                      const Text("18K"),
-                      const SizedBox(width: 20),
-                      SvgPicture.asset("assets/icons/star.svg"),
-                      const SizedBox(width: 5),
-                      const Text("4.8")
-                    ],
-                  ),
+                  Text(courseDetail.description, style: kSubtitleTextStyle),
+                  const SizedBox(height: 16),
                   const SizedBox(height: 20),
                   RichText(
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: "\$50 ",
+                          text: "\$ ${courseDetail.coursePrice} ",
                           style: kHeadingextStyle.copyWith(fontSize: 32),
                         ),
                         TextSpan(
-                          text: "\$70",
+                          text: "\$${courseDetail.defaultPrice}",
                           style: TextStyle(
                             color: kTextColor.withOpacity(.5),
                             decoration: TextDecoration.lineThrough,
@@ -99,35 +125,18 @@ class CourseDetailWidget extends StatelessWidget {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.all(30),
-                      child: ListView(
-                        children: const <Widget>[
-                          Text("Course Content", style: kTitleTextStyle),
-                          SizedBox(height: 30),
-                          CourseContent(
-                            number: "01",
-                            duration: 5.35,
-                            title: "Welcome to the Course",
-                            isDone: true,
-                          ),
-                          CourseContent(
-                            number: '02',
-                            duration: 19.04,
-                            title: "Design Thinking - Intro",
-                            isDone: true,
-                          ),
-                          CourseContent(
-                            number: '03',
-                            duration: 15.35,
-                            title: "Design Thinking Process",
-                          ),
-                          CourseContent(
-                            number: '04',
-                            duration: 5.35,
-                            title: "Customer Perspective",
-                          ),
-                          SizedBox(height: 60,)
-                        ],
-                      ),
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: topics.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return CourseContent(
+                            number: "0" + (index + 1).toString(),
+                            title: topics[index].name,
+                          );
+                        },
+                      )
                     ),
                     Positioned(
                       right: 0,
@@ -171,7 +180,7 @@ class CourseDetailWidget extends StatelessWidget {
                                 ),
                                 child: Text(
                                   "Buy Now",
-                                  style: kSubtitleTextSyule.copyWith(
+                                  style: kSubtitleTextStyle.copyWith(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -194,13 +203,11 @@ class CourseDetailWidget extends StatelessWidget {
 
 class CourseContent extends StatelessWidget {
   final String number;
-  final double duration;
   final String title;
   final bool isDone;
   const CourseContent({
     Key? key,
     required this.number,
-    required this.duration,
     required this.title,
     this.isDone = false,
   }) : super(key: key);
@@ -215,29 +222,20 @@ class CourseContent extends StatelessWidget {
             number,
             style: kHeadingextStyle.copyWith(
               color: kTextColor.withOpacity(.15),
-              fontSize: 32,
+              fontSize: 24,
             ),
           ),
-          const SizedBox(width: 8),
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: "$duration mins\n",
-                  style: TextStyle(
-                    color: kTextColor.withOpacity(.5),
-                    fontSize: 18,
-                  ),
-                ),
-                TextSpan(
-                  text: title,
-                  style: kSubtitleTextSyule.copyWith(
-                    fontWeight: FontWeight.w600,
-                    height: 1.5,
-                  ),
-                ),
-              ],
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+             title,
+             style: kSubtitleTextStyle.copyWith(
+                fontWeight: FontWeight.w600,
+                height: 1,
+                fontSize: 20
+             ),
             ),
+            flex: 4
           ),
           const Spacer(),
           Container(

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'Authentication/login.dart';
-import 'User/Teacher/TeacherBookingDetails.dart';
-
 
 void main() {
   runApp(MyApp());
@@ -17,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  LoginWidget(),
+      home:  const LoginWidget(),
     );
   }
 }
