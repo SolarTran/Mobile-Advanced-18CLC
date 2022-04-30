@@ -26,7 +26,7 @@ class _DashboardState extends State<Dashboard> {
     accessToken = widget.token;
     _widgetOptions = <Widget>[
       ListCoursesWidget(token: accessToken),
-      const ListTeachersScreen(title: "title"),
+      ListTeachersScreen(token: accessToken),
       const HomePage(),
       const CalendarPage(),
       const UserProfileWidget()

@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
-import 'package:mobile/Courses/CourseModel.dart';
+import 'package:mobile/Model/CourseModel.dart';
+import 'package:mobile/Model/TeacherModel.dart';
 
-import '../User/UserModel.dart';
+import '../Model/UserModel.dart';
 
 
 class ApiService {
@@ -33,7 +34,7 @@ class ApiService {
     });
   }
 
-  Future<UserModel> getUserInfo(String email, String password) async {
+  Future <UserModel> getUserInfo(String email, String password) async {
     return http.post(Uri.parse("https://sandbox.api.lettutor.com/auth/login"),
         headers: {
           'Content-Type': 'application/json',
@@ -82,7 +83,7 @@ class ApiService {
     });
   }
 
-  Future<CourseModel> getCourseDetail(String courseId, String token) async {
+  Future <CourseModel> getCourseDetail(String courseId, String token) async {
     return http.get(
       Uri.parse("https://sandbox.api.lettutor.com/course/" + courseId),
       headers: {
@@ -100,8 +101,6 @@ class ApiService {
       const JsonDecoder _decoder = JsonDecoder();
       final body = _decoder.convert(jsonBody);
       CourseModel courses = CourseModel.fromJson(body['data']);
-      final List topicContainer = body['data']['topics'];
-      List<TopicModel> topics = topicContainer.map((contactRaw) => TopicModel.fromJson(contactRaw)).toList();
       return courses;
     });
   }
@@ -126,6 +125,55 @@ class ApiService {
       final List topicContainer = body['data']['topics'];
       List<TopicModel> topics = topicContainer.map((contactRaw) => TopicModel.fromJson(contactRaw)).toList();
       return topics;
+    });
+  }
+
+  Future <List<TeacherModel>> getTeachers(String token) async {
+    return http.get(
+      Uri.parse("https://sandbox.api.lettutor.com/tutor/more?perPage=10&page=1"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    ).then((http.Response response) {
+      final String jsonBody = response.body;
+      final int statusCode = response.statusCode;
+
+      if (statusCode != 200) {
+        throw Exception(
+            "StatusCode:$statusCode, Error:${response.reasonPhrase}");
+      }
+
+      const JsonDecoder _decoder = JsonDecoder();
+      final body = _decoder.convert(jsonBody);
+      final List teacherContainer = body['tutors']['rows'];
+      List<TeacherModel> teachers = teacherContainer.map((contactRaw) => TeacherModel.fromJson(contactRaw)).toList();
+      return teachers;
+    });
+  }
+
+  Future <TeacherDetailModel> getTeacherDetail(String teacherId, String token) async {
+    return http.get(
+      Uri.parse("https://sandbox.api.lettutor.com/tutor/" + teacherId),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    ).then((http.Response response) {
+      final String jsonBody = response.body;
+      final int statusCode = response.statusCode;
+
+      if (statusCode != 200) {
+        throw Exception(
+            "StatusCode:$statusCode, Error:${response.reasonPhrase}");
+      }
+
+      const JsonDecoder _decoder = JsonDecoder();
+      final body = _decoder.convert(jsonBody);
+      TeacherDetailModel teacher = TeacherDetailModel.fromJson(body);
+      log("from api: " + teacher.isFavorite.toString());
+      log("from api: " + teacherId);
+      return teacher;
     });
   }
 }

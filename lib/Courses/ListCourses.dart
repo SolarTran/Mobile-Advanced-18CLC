@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mobile/Courses/CourseDetail.dart';
-import 'package:mobile/Courses/CourseModel.dart';
+import 'package:mobile/Model/CourseModel.dart';
 import 'package:mobile/User/UserProfile.dart';
 import '../Service/API.dart';
 import 'config.dart';

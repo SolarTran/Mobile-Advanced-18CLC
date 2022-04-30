@@ -1,64 +1,82 @@
 import 'package:flutter_svg/svg.dart';
+import 'package:mobile/Model/TeacherModel.dart';
 import 'package:mobile/User/Teacher/TeacherDetail.dart';
+import '../../Service/API.dart';
 import 'config.dart';
-import 'lesson.dart';
 import 'package:flutter/material.dart';
 
 class ListTeachersScreen extends StatefulWidget {
-  const ListTeachersScreen({Key? key, required this.title}) : super(key: key);
+  const ListTeachersScreen({Key? key, required this.token}) : super(key: key);
 
-  final String title;
+  final String token;
 
   @override
   _ListTeachersScreenState createState() => _ListTeachersScreenState();
 }
 
 class _ListTeachersScreenState extends State<ListTeachersScreen> {
-  late List teachers;
+  late List<TeacherModel> teachers;
+  late String accessToken;
   final List<String> filters = <String>['PETS', 'IETLS', 'TOEIC', 'TOEFL'];
   @override
   void initState() {
-    teachers = getTeachers();
     super.initState();
+    accessToken = widget.token;
+    _getTeachers();
+  }
+
+  void _getTeachers() async {
+    teachers = (await ApiService().getTeachers(accessToken));
+    Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
   }
 
   @override
   Widget build(BuildContext context) {
-    ListTile makeListTile(Teacher lesson) => ListTile(
+    ListTile makeListTile(TeacherModel teacher) => ListTile(
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           leading: Container(
               padding: const EdgeInsets.only(right: 12.0),
               decoration: const BoxDecoration(
-                border: Border(right: BorderSide(width: 1.0, color: Colors.white24)),
+                border: Border(
+                    right: BorderSide(width: 1.0, color: Colors.white24)),
               ),
-              child: const CircleAvatar(
-                backgroundImage: AssetImage('assets/images/1.jpg'),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(teacher.avatar),
               )),
-          title: Text(
-            lesson.name,
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          title: Text(teacher.name,
+              style: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold)),
           subtitle: Row(
             children: <Widget>[
               Expanded(
-                flex: 4,
-                child: Text(lesson.tag, style: const TextStyle(color: Colors.white)))
+                  flex: 4,
+                  child: Text(teacher.country,
+                      style: const TextStyle(color: Colors.white)))
             ],
           ),
-          trailing: const Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
+          trailing: const Icon(Icons.keyboard_arrow_right,
+              color: Colors.white, size: 30.0),
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const DetailScreen())
-            );
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TeacherDetailScreen(
+                  token: accessToken,
+                  id: teacher.userId,
+                  teacher: teacher
+                )));
           },
         );
 
-    Card makeCard(Teacher lesson) => Card(
+    Card makeCard(TeacherModel teacher) => Card(
+          shape: const RoundedRectangleBorder(
+            side: BorderSide(color: Colors.white, width: 1),
+          ),
           margin: const EdgeInsets.only(bottom: 10.0),
           child: Container(
-            decoration: const BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
-            child: makeListTile(lesson),
+            decoration: BoxDecoration(
+                color: const Color.fromRGBO(64, 75, 96, .9),
+                borderRadius: BorderRadius.circular(25)),
+            child: makeListTile(teacher),
           ),
         );
 
@@ -78,17 +96,17 @@ class _ListTeachersScreenState extends State<ListTeachersScreen> {
         itemCount: filters.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            width: 150,
-            height: 5.0,
-            margin: const EdgeInsets.only(right: 20.0),
-            child: OutlinedButton(
-              onPressed: null,
-              style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
+              width: 150,
+              height: 5.0,
+              margin: const EdgeInsets.only(right: 20.0),
+              child: OutlinedButton(
+                onPressed: null,
+                style: OutlinedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
                 ),
-              child: Text(filters[index]),
-          ));
+                child: Text(filters[index]),
+              ));
         });
 
     return Scaffold(
@@ -132,35 +150,10 @@ class _ListTeachersScreenState extends State<ListTeachersScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                SizedBox(height: 30, child:listFilter),
+                SizedBox(height: 30, child: listFilter),
                 const SizedBox(height: 20),
                 Flexible(child: makeBody)
               ],
             )));
   }
-}
-
-List getTeachers() {
-  return [
-    Teacher(
-        name: "Kathy Huỳnh",
-        tag: "Beginner",
-    ),
-    Teacher(
-        name: "Nhi Lam",
-        tag: "Beginner",
-    ),
-    Teacher(
-        name: "Albie Corpuz",
-        tag: "Intermidiate",
-    ),
-    Teacher(
-        name: "Jill Leano",
-        tag: "Intermidiate",
-    ),
-    Teacher(
-        name: "Caela",
-        tag: "Advanced",
-    ),
-  ];
 }

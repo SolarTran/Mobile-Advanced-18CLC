@@ -1,22 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/Model/TeacherModel.dart';
 import 'package:mobile/User/Teacher/progress_widget.dart';
+import '../../Service/API.dart';
 import 'light_color.dart';
 import 'text_styles.dart';
 import 'theme.dart';
 import 'rating_star_widget.dart';
 import 'extension.dart';
 
-class DetailScreen extends StatefulWidget {
-  const DetailScreen({Key? key}) : super(key: key);
+
+
+class TeacherDetailScreen extends StatefulWidget {
+  const TeacherDetailScreen({Key? key, required this.token, required this.id, required this.teacher}) : super(key: key);
+
+  final String token;
+  final String id;
+  final TeacherModel teacher;
 
   @override
-  _DetailPageState createState() => _DetailPageState();
+  _TeacherDetailPageState createState() => _TeacherDetailPageState();
 }
 
-class _DetailPageState extends State<DetailScreen> {
+class _TeacherDetailPageState extends State<TeacherDetailScreen> {
+
+  late String accessToken;
+  late String teacherId;
+  late TeacherModel teacher;
+  late TeacherDetailModel teacherDetail;
+
   @override
   void initState() {
     super.initState();
+    accessToken = widget.token;
+    teacherId = widget.id;
+    teacher = widget.teacher;
+    _getTeacherDetail();
+  }
+
+  void _getTeacherDetail() async {
+    teacherDetail = (await ApiService().getTeacherDetail(teacherId, accessToken));
+    Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
   }
 
   Widget _appbar() {
@@ -27,8 +50,12 @@ class _DetailPageState extends State<DetailScreen> {
         children: <Widget>[
           BackButton(color: Theme.of(context).primaryColor),
           IconButton(
-            icon: const Icon(Icons.favorite, color: Colors.red),
+            icon: Icon(
+                teacherDetail.isFavorite? Icons.favorite : Icons.favorite_outline,
+                color: Colors.red),
             onPressed: () {
+              teacherDetail.isFavorite = !teacherDetail.isFavorite;
+              setState(() {});
             },
           )],
       ),
@@ -47,8 +74,8 @@ class _DetailPageState extends State<DetailScreen> {
         bottom: false,
         child: Stack(
           children: <Widget>[
-            Image.asset(
-                'assets/images/1.jpg',
+            Image.network(
+              teacher.avatar,
               width: 980,
               height: 300,
             ),
@@ -63,7 +90,7 @@ class _DetailPageState extends State<DetailScreen> {
                     left: 19,
                     right: 19,
                     top: 16,
-                  ), //symmetric(horizontal: 19, vertical: 16),
+                  ),
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
@@ -81,7 +108,7 @@ class _DetailPageState extends State<DetailScreen> {
                           title: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              Text('Teacher 1', style: titleStyle,),
+                              Text(teacher.name, style: titleStyle),
                               const SizedBox(width: 10),
                               Icon(
                                 Icons.check_circle,
@@ -89,48 +116,49 @@ class _DetailPageState extends State<DetailScreen> {
                                 color: Theme.of(context).primaryColor,
                               ),
                               const Spacer(),
-                              const Padding(
-                                padding: EdgeInsets.only(right: 10),
-                                child: RatingStarWidget(rating: 5),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: RatingStarWidget(rating: teacherDetail.avgRating),
                               ),
                             ],
                           ),
-                          subtitle: Text('English Teacher', style: TextStyles.bodySm.subTitleColor.bold),
+                          subtitle: Text(teacher.profession, style: TextStyles.bodySm.subTitleColor.bold),
                         ),
                         const Divider(thickness: .3, color: LightColor.grey),
-                        Row(
-                          children: <Widget>[
-                            ProgressWidget(
-                              value: 79.2,
-                              totalValue: 100,
-                              activeColor: LightColor.purpleExtraLight,
-                              backgroundColor: LightColor.grey.withOpacity(.3),
-                              title: "Good Review",
-                              durationTime: 500,
-                            ),
-                            ProgressWidget(
-                              value: 93.2,
-                              totalValue: 100,
-                              activeColor: LightColor.purpleLight,
-                              backgroundColor: LightColor.grey.withOpacity(.3),
-                              title: "Total Score",
-                              durationTime: 300,
-                            ),
-                            ProgressWidget(
-                              value: 85.2,
-                              totalValue: 100,
-                              activeColor: LightColor.purple,
-                              backgroundColor: LightColor.grey.withOpacity(.3),
-                              title: "Satisfaction",
-                              durationTime: 800,
-                            ),
-                          ],
-                        ),
-                        const Divider(thickness: .3, color: LightColor.grey),
-                        Text("About", style: titleStyle).vP16,
+                        Text("About", style: titleStyle).vP4,
                         Text(
-                          'Hello there! I am an Industrial Engineer in the profession but chose to do online teaching because I love to meet different learners. I am an outgoing person and I have this passion for dealing with different people and seeing them progress with',
-                          style: TextStyles.body.subTitleColor,
+                          teacher.bio,
+                          style: const TextStyle(
+                              color: LightColor.lightblack,
+                              fontSize: 16
+                          ),
+                        ),
+                        const Divider(thickness: .3, color: LightColor.grey),
+                        Text("Specialities", style: titleStyle).vP4,
+                        Text(
+                          teacher.specialties,
+                          style: const TextStyle(
+                              color: LightColor.lightblack,
+                              fontSize: 16
+                          ),
+                        ),
+                        const Divider(thickness: .3, color: LightColor.grey),
+                        Text("Interests", style: titleStyle).vP4,
+                        Text(
+                          teacher.interests,
+                          style: const TextStyle(
+                              color: LightColor.lightblack,
+                              fontSize: 16
+                          ),
+                        ),
+                        const Divider(thickness: .3, color: LightColor.grey),
+                        Text("Languages", style: titleStyle).vP4,
+                        Text(
+                          teacher.languages, //== "en" ? "English" : "Japanese",
+                          style: const TextStyle(
+                              color: LightColor.lightblack,
+                              fontSize: 16
+                          ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

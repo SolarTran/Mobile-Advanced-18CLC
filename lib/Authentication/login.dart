@@ -7,7 +7,7 @@ import 'package:mobile/Authentication/ForgotPassword/SendMail.dart';
 import 'package:mobile/Authentication/signup.dart';
 import 'package:mobile/Dashboard.dart';
 import '../Service/API.dart';
-import '../User/UserModel.dart';
+import '../Model/UserModel.dart';
 
 class LoginWidget extends StatefulWidget {
   const LoginWidget({Key? key}) : super(key: key);

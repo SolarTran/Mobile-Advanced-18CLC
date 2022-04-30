@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mobile/Courses/CourseModel.dart';
+import 'package:mobile/Model/CourseModel.dart';
 import '../Service/API.dart';
 import 'config.dart';
 

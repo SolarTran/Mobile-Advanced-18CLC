@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'light_color.dart';
 
@@ -12,16 +14,17 @@ class RatingStarWidget extends StatefulWidget {
 class _RatingStarState extends State<RatingStarWidget> {
   Widget _start(int index) {
     bool halfStar = false;
-    if ((widget.rating * 2) % 2 != 0) {
-      if (index < widget.rating && index == widget.rating - .5) {
+    int rate = widget.rating.toInt();
+    if ((rate * 2) % 2 != 0) {
+      if (index < rate && index == rate - .5) {
         halfStar = true;
       }
     }
 
     return Icon(
       halfStar ? Icons.star_half : Icons.star,
-      color: index < widget.rating ? LightColor.orange : LightColor.grey,
-      size: 10,
+      color: index < rate ? LightColor.orange : LightColor.grey,
+      size: 20,
     );
   }
 
