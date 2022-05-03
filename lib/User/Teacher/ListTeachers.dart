@@ -6,28 +6,24 @@ import 'config.dart';
 import 'package:flutter/material.dart';
 
 class ListTeachersScreen extends StatefulWidget {
-  const ListTeachersScreen({Key? key, required this.token}) : super(key: key);
+  const ListTeachersScreen({Key? key, required this.teachers, required this.token}) : super(key: key);
 
-  final String token;
+  final List<TeacherModel>? teachers;
+  final String? token;
 
   @override
   _ListTeachersScreenState createState() => _ListTeachersScreenState();
 }
 
 class _ListTeachersScreenState extends State<ListTeachersScreen> {
-  late List<TeacherModel> teachers;
+  List<TeacherModel>? teachers;
   late String accessToken;
   final List<String> filters = <String>['PETS', 'IETLS', 'TOEIC', 'TOEFL'];
   @override
   void initState() {
     super.initState();
-    accessToken = widget.token;
-    _getTeachers();
-  }
-
-  void _getTeachers() async {
-    teachers = (await ApiService().getTeachers(accessToken));
-    Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
+    teachers = widget.teachers;
+    accessToken = widget.token!;
   }
 
   @override
@@ -84,9 +80,9 @@ class _ListTeachersScreenState extends State<ListTeachersScreen> {
       padding: EdgeInsets.zero,
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: teachers.length,
+      itemCount: teachers!.length,
       itemBuilder: (BuildContext context, int index) {
-        return makeCard(teachers[index]);
+        return makeCard(teachers![index]);
       },
     );
 

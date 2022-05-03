@@ -23,6 +23,10 @@ dependencies:
   booking_calendar: ^1.0.2
   syncfusion_flutter_calendar: ^18.4.46
   http: ^0.13.4
+  animated_theme_switcher: ^2.0.6
+  intl: ^0.17.0
+  screen_loader: ^4.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

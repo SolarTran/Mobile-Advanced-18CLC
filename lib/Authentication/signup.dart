@@ -1,6 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../Service/API.dart';
+import '../Utils/DialogWidget.dart';
+import 'login.dart';
 
 class SignUpWidget extends StatefulWidget {
   const SignUpWidget({Key? key}) : super(key: key);
@@ -12,9 +18,18 @@ class SignUpWidget extends StatefulWidget {
 
 class _SignUpWidgetState extends State<SignUpWidget> {
 
+  String? token;
+  String? inputUsername;
+  String? inputPassword;
+
+  TextEditingController password = TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
+
   String? validateUsername (String? username) {
     if (username == null || username.isEmpty) {
       return 'Email cannot be empty';
+    } else if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(username)) {
+      return 'Email is invalid';
     } else {
       return null;
     }
@@ -23,20 +38,68 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   String? validatePassword (String? password) {
     if (password == null || password.isEmpty) {
       return 'Password cannot be empty';
-    } else {
+    } else if (password.length <6) {
+      return 'Password length must be at least 6 characters long';
+    }
+    else {
       return null;
     }
   }
 
-  String? validateConfirmPassword (String? confirmPassword) {
-    if (confirmPassword == null || confirmPassword.isEmpty) {
+  String? validateConfirmPassword (String? inputConfirmPassword) {
+    if (inputConfirmPassword == null || inputConfirmPassword.isEmpty) {
       return 'Confirm password cannot be empty';
-    } else {
+    } else if (inputConfirmPassword.length <6) {
+      return 'Confirm password length must be at least 6 characters long';
+    } else if (password.text != confirmPassword.text) {
+      return 'Confirm password doesn\'t match';
+    }
+    else {
       return null;
     }
   }
 
-  void click() {}
+  void saveUsername(String? username) {
+    inputUsername = username!;
+  }
+
+  void savePassword(String? password) {
+    inputPassword = password!;
+  }
+
+  final formStateKey = GlobalKey<FormState>();
+
+  void submit() async {
+    if (formStateKey.currentState?.validate() == true) {
+      formStateKey.currentState!.save();
+      token = (await ApiService().registerAccount(inputUsername!, inputPassword!));
+      log("From signup: " + formStateKey.currentState!.validate().toString());
+      if(token != "" && token !="4") {
+        final action = await ViewDialogs.yesOrNoDialog(
+          context,
+          'Notification',
+          'Create account successfully. Please login',
+        );
+        if (action == ViewDialogsAction.yes) {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const LoginWidget()),
+                  (route) => false
+          );
+        }
+      } else if (token == "4") {
+        final action = await ViewDialogs.yesOrNoDialog(
+          context,
+          'Notification',
+          'Email has already taken',
+        );
+        if (action == ViewDialogsAction.yes) {
+          setState(() {});
+        }
+      }
+    } else {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,59 +151,70 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    SizedBox(
-                      width: 260,
-                      height: 60,
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                            suffix: Icon(
-                              FontAwesomeIcons.envelope,
-                              color: Colors.red,
+                    Form(
+                      key: formStateKey,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: 260,
+                            height: 60,
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                  suffix: Icon(
+                                    FontAwesomeIcons.envelope,
+                                    color: Colors.red,
+                                  ),
+                                  labelText: "Email Address",
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                  )),
+                              validator: validateUsername,
+                              onSaved: saveUsername,
                             ),
-                            labelText: "Email Address",
-                            border: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(8)),
-                            )),
-                        validator: validateUsername,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      width: 260,
-                      height: 60,
-                      child: TextFormField(
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                            suffix: Icon(
-                              FontAwesomeIcons.eyeSlash,
-                              color: Colors.red,
+                          ),
+                          const SizedBox(height: 12),
+                          SizedBox(
+                            width: 260,
+                            height: 60,
+                            child: TextFormField(
+                              obscureText: true,
+                              decoration: const InputDecoration(
+                                  suffix: Icon(
+                                    FontAwesomeIcons.eyeSlash,
+                                    color: Colors.red,
+                                  ),
+                                  labelText: "Password",
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                  )),
+                              validator: validatePassword,
+                              onSaved: savePassword,
+                              controller: password
                             ),
-                            labelText: "Password",
-                            border: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(8)),
-                            )),
-                        validator: validatePassword,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      width: 260,
-                      height: 60,
-                      child:  TextFormField(
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                            suffix: Icon(
-                              FontAwesomeIcons.eyeSlash,
-                              color: Colors.red,
+                          ),
+                          const SizedBox(height: 12),
+                          SizedBox(
+                            width: 260,
+                            height: 60,
+                            child:  TextFormField(
+                              obscureText: true,
+                              decoration: const InputDecoration(
+                                  suffix: Icon(
+                                    FontAwesomeIcons.eyeSlash,
+                                    color: Colors.red,
+                                  ),
+                                  labelText: "Confirm Password",
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                  )),
+                              validator: validateConfirmPassword,
+                              controller: confirmPassword
                             ),
-                            labelText: "Confirm Password",
-                            border: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(8)),
-                            )),
-                        validator: validateConfirmPassword,
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -168,7 +242,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                   fontWeight: FontWeight.bold),
                             ),
                             onPressed: () {
-                              Navigator.pop(context);
+                              submit();
                             },
                           )
 

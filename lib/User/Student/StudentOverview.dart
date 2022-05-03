@@ -1,13 +1,61 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:mobile/Model/BookingModel.dart';
+import 'package:mobile/Model/UserModel.dart';
+
+import '../../Service/API.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({
+        Key? key,
+        required this.student,
+        required this.token,
+        required this.date,
+        required this.month,
+        required this.day
+      }) : super(key: key);
+
+  final UserModel? student;
+  final String token;
+  final String date;
+  final String month;
+  final String day;
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+
+
+  List<BookingModel>? listBooking;
+  late String date = "";
+  late String month = "";
+  late String day = "";
+  BookingModel temp = BookingModel(
+      tutorId: "tutorId",
+      date: "date",
+      startTime: "startTime",
+      tutorName: "tutorName",
+      tutorAvatar: "tutorAvatar"
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    date = widget.date;
+    month = widget.month;
+    day = widget.day;
+    _getBookingList();
+  }
+
+  void _getBookingList() async {
+    listBooking = (await ApiService().todayBooking(widget.token));
+    Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -25,16 +73,16 @@ class _HomePageState extends State<HomePage> {
               Container(
                 alignment: Alignment.centerRight,
                 child: RichText(
-                  text: const TextSpan(
-                      text: "Wed",
-                      style: TextStyle(
+                  text: TextSpan(
+                      text: date,
+                      style: const TextStyle(
                           color: Color(0XFF263064),
                           fontSize: 12,
                           fontWeight: FontWeight.w900),
                       children: [
                         TextSpan(
-                          text: " 10 Oct",
-                          style: TextStyle(
+                          text: " $day $month",
+                          style: const TextStyle(
                               color: Color(0XFF263064),
                               fontSize: 12,
                               fontWeight: FontWeight.normal),
@@ -57,35 +105,34 @@ class _HomePageState extends State<HomePage> {
                           blurRadius: 12,
                           spreadRadius: 8,
                         )],
-                      image: const DecorationImage(
+                      image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(
-                            "https://images.unsplash.com/photo-1541647376583-8934aaf3448a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80"),
+                        image: NetworkImage (widget.student!.avatar)
                       ),
                     ),
                   ),
                   const SizedBox(width: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children:[
                       Text(
-                        "Hi Jackie",
-                        style: TextStyle(
+                        "Hi " + widget.student!.name,
+                        style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w900,
                           color: Color(0XFF343E87),
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Text(
+                      const SizedBox(height: 10),
+                      const Text(
                         "Here is a list of schedule",
                         style: TextStyle(
                           fontSize: 13,
                           color: Colors.blueGrey,
                         ),
                       ),
-                      SizedBox(height: 8),
-                      Text(
+                      const SizedBox(height: 8),
+                      const Text(
                         "You have learned 3 hours",
                         style: TextStyle(
                           fontSize: 13,
@@ -109,10 +156,10 @@ class _HomePageState extends State<HomePage> {
             ),
             child: ListView(
               children: [
-                buildTitleRow("TODAY CLASSES", 3),
+                buildTitleRow("TODAY CLASSES ", listBooking == null ? 0 :listBooking!.length),
                 const SizedBox(height: 20),
-                buildClassItem(),
-                buildClassItem(),
+                buildClassItem(listBooking == null ? temp : listBooking![0]),
+                buildClassItem(listBooking == null ? temp : listBooking![1]),
                 const SizedBox(height: 25),
                 buildTitleRow("YOUR TASKS", 4),
                 const SizedBox(height: 20),
@@ -208,7 +255,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Container buildClassItem() {
+  Container buildClassItem(BookingModel booking) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.all(10),
@@ -222,11 +269,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text("07:00", style: TextStyle(fontWeight: FontWeight.bold)),
-              Text("AM", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
-              ),
-            ],
+            children:[Text(booking.startTime, style: const TextStyle(fontWeight: FontWeight.bold))],
           ),
           Container(
             height: 100,
@@ -259,16 +302,15 @@ class _HomePageState extends State<HomePage> {
                   )],
               ),
               Row(
-                children: const [
+                children:[
                   CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80"),
+                    backgroundImage: NetworkImage(booking.tutorAvatar),
                     radius: 10,
                   ),
-                  SizedBox(width: 5),
+                  const SizedBox(width: 5),
                   Text(
-                    "Gabriel Sutton",
-                    style: TextStyle(color: Colors.grey, fontSize: 13),
+                    booking.tutorName,
+                    style: const TextStyle(color: Colors.grey, fontSize: 13),
                   )],
               ),
             ],

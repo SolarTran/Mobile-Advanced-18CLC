@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mobile/Courses/CourseDetail.dart';
 import 'package:mobile/Model/CourseModel.dart';
-import 'package:mobile/User/UserProfile.dart';
 import '../Service/API.dart';
 import 'config.dart';
 
@@ -43,43 +42,34 @@ class _ListCoursesWidgetState extends State<ListCoursesWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                IconButton(
-                  icon: Image.asset("assets/images/2.png"),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context)=>const UserProfileWidget())
-                    );
-                  }),
-              ],
-            ),
+            const SizedBox(height: 20),
             const Text("Hey Alex,", style: kHeadingextStyle),
             const Text("Find a course you want to learn", style: kSubheadingextStyle),
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 5),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              height: 60,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: const Color(0xFFF5F5F7),
-                borderRadius: BorderRadius.circular(40),
-              ),
-              child: Row(
-                children: <Widget>[
-                  SvgPicture.asset("assets/icons/search.svg"),
-                  const SizedBox(width: 16),
-                  const Text(
-                    "Search for anything",
-                    style: TextStyle(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                height: 60,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF5F5F7),
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      hintText: "Search for something",
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.search),
+                    ),
+                    style: const TextStyle(
                       fontSize: 18,
                       color: Color(0xFFA0A5BD),
                     ),
-                  )
-                ],
-              ),
+                    onSubmitted: (value) {
+                      setState(() {});
+                    },
+                  ),
+                )
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

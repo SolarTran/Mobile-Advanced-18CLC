@@ -1,12 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mobile/Service/API.dart';
 
-import 'OtpVerify.dart';
+import '../Utils/DialogWidget.dart';
+import 'login.dart';
 
-class SendMailWidget extends StatelessWidget {
+class SendMailWidget extends StatefulWidget {
   const SendMailWidget({Key? key}) : super(key: key);
 
-  void click() {}
+  @override
+  _SendMailWidgetState createState() => _SendMailWidgetState();
+}
+
+class _SendMailWidgetState extends State<SendMailWidget> {
+
+  String? inputEmail;
+  final formStateKey = GlobalKey<FormState>();
+
+  String? validateEmail (String? email) {
+    if (email == null || email.isEmpty) {
+      return 'Email cannot be empty';
+    } else {
+      return null;
+    }
+  }
+
+  void saveEmail(String? email) {
+    inputEmail = email;
+  }
+
+  void submitForm() async {
+    if (formStateKey.currentState?.validate() == true) {
+      formStateKey.currentState!.save();
+      String message = (await ApiService().resetPassword(inputEmail!));
+      if(message == "Email send success!") {
+        final action = await ViewDialogs.yesOrNoDialog(
+          context,
+          'Notification',
+          'Check your mail and follow instruction to reset your password.',
+        );
+        if (action == ViewDialogsAction.yes) {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const LoginWidget()),
+                  (route) => false
+          );
+        }
+      } else if (message == "Email doesn't exist!") {
+        final action = await ViewDialogs.yesOrNoDialog(
+          context,
+          'Notification',
+          "Email doesn't exist! Please check again.",
+        );
+        if (action == ViewDialogsAction.yes) {
+          setState(() {});
+        }
+      } else {
+        setState(() {});
+      }
+    } else {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,19 +113,24 @@ class SendMailWidget extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    const SizedBox(
-                      width: 360,
-                      height: 60,
-                      child: TextField(
-                        decoration: InputDecoration(
-                            suffix: Icon(
-                              FontAwesomeIcons.envelope,
-                              color: Colors.red,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(20)),
-                            )),
+                    Form(
+                      key: formStateKey,
+                      child: SizedBox(
+                        width: 360,
+                        height: 60,
+                        child: TextFormField(
+                          decoration: const InputDecoration(
+                              suffix: Icon(
+                                FontAwesomeIcons.envelope,
+                                color: Colors.red,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(20)),
+                              )),
+                          validator: validateEmail,
+                          onSaved: saveEmail,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 35),
@@ -98,11 +157,7 @@ class SendMailWidget extends StatelessWidget {
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold),
                           ),
-                            onPressed: (){
-                              Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => const VerifyOtpScreen()),
-                              );
-                            },
+                            onPressed: (){submitForm();},
                         ))
                       ),
                     ),

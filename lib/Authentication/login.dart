@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mobile/Authentication/ForgotPassword/SendMail.dart';
+import 'package:mobile/Authentication/SendMail.dart';
 import 'package:mobile/Authentication/signup.dart';
 import 'package:mobile/Dashboard.dart';
 import '../Service/API.dart';
@@ -20,7 +20,7 @@ class LoginWidget extends StatefulWidget {
 
 class _LoginWidgetState extends State<LoginWidget> {
 
-  //UserModel user = UserModel();
+  UserModel? user;
   late String token;
   late String inputUsername;
   late String inputPassword;
@@ -50,16 +50,19 @@ class _LoginWidgetState extends State<LoginWidget> {
   }
 
   final formStateKey = GlobalKey<FormState>();
+  void _getUserInfo() async {
+    user = (await ApiService().getUserInfo(inputUsername, inputPassword));
+  }
 
   void submitForm() async {
     if (formStateKey.currentState?.validate() != null) {
       formStateKey.currentState!.save();
       token = (await ApiService().getToken(inputUsername, inputPassword));
       if(token != "") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Dashboard(token: token)),
-        );
+        _getUserInfo();
+        Future.delayed(const Duration(seconds: 5), () {
+          Navigator.push(context, MaterialPageRoute(builder: (_) => Dashboard(token: token, user: user)));
+        });
       }
     }
   }

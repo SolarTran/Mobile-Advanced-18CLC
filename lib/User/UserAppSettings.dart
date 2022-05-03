@@ -1,11 +1,19 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../Authentication/login.dart';
+import '../Model/UserModel.dart';
+import 'EditProfile.dart';
+
 
 class UserAppSettingsScreen extends StatefulWidget {
-  const UserAppSettingsScreen({Key? key}) : super(key: key);
+  const UserAppSettingsScreen({Key? key, required this.userInfo, required this.token}) : super(key: key);
+
+  final String token;
+  final UserModel? userInfo;
 
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
@@ -35,12 +43,11 @@ class _SettingsScreenState extends State<UserAppSettingsScreen> {
             child: ListView(
               children: [
                 SimpleUserCard(
-                  userName: "Sang",
-                  userProfilePic: const AssetImage("assets/images/user.png"),
+                  userName: widget.userInfo!.name,
+                  userProfilePic: NetworkImage(widget.userInfo!.avatar),
                 ),
                 SettingsGroup(
                   items: [
-
                     SettingsItem(
                       onTap: () {},
                       icons: Icons.fingerprint,
@@ -89,7 +96,7 @@ class _SettingsScreenState extends State<UserAppSettingsScreen> {
                     SettingsItem(
                       onTap: () {
                         Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => LoginWidget()),
+                            MaterialPageRoute(builder: (context) => const LoginWidget()),
                                 (route) => false
                         );
                       },
@@ -97,9 +104,16 @@ class _SettingsScreenState extends State<UserAppSettingsScreen> {
                       title: "Sign Out",
                     ),
                     SettingsItem(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => EditProfilePage(
+                            userInfo: widget.userInfo,
+                            token: widget.token
+                          )),
+                        );
+                      },
                       icons: CupertinoIcons.repeat,
-                      title: "Change Password",
+                      title: "Change Information",
                     ),
                     SettingsItem(
                       onTap: () {},

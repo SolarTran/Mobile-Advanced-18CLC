@@ -1,29 +1,42 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:mobile/Authentication/login.dart';
 import 'package:mobile/User/UserAppSettings.dart';
+import '../Model/UserModel.dart';
 import 'UserProfileScreenConfiguration.dart';
-import 'package:flutter_svg/svg.dart';
 
 class UserProfileWidget extends StatelessWidget {
-  const UserProfileWidget({Key? key}) : super(key: key);
-
+  const UserProfileWidget({Key? key, required this.userInfo, required this.token}) : super(key: key);
+  final UserModel? userInfo;
+  final String token;
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: UserProfile()
+    return Scaffold(
+      body: UserProfile(userInfo: userInfo, token: token)
     );
   }
 }
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({Key? key}) : super(key: key);
-
+  const UserProfile({Key? key, required this.userInfo, required this.token}) : super(key: key);
+  final UserModel? userInfo;
+  final String token;
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<UserProfile> {
+
+  UserModel? userInfo;
+
+  @override
+  void initState() {
+    super.initState();
+    userInfo = widget.userInfo;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,30 +46,30 @@ class _ProfilePageState extends State<UserProfile> {
           Padding(
             padding: const EdgeInsets.only(top: 40, right: 10),
             child: Column(
-              children: const <Widget>[
-                AvatarImage(),
-                SizedBox(height: 15),
-                SocialIcons(),
-                SizedBox(height: 5),
+              children: <Widget>[
+                AvatarImage(avatarUrl: userInfo!.avatar),
+                const SizedBox(height: 15),
+                const SocialIcons(),
+                const SizedBox(height: 5),
                 Text(
-                  'Sang',
-                  style: TextStyle(
+                  userInfo!.name,
+                  style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w700,
                       fontFamily: "Poppins"),
                 ),
                 Text(
-                  '@amFOSS',
-                  style: TextStyle(fontWeight: FontWeight.w300),
+                  userInfo!.email,
+                  style: const TextStyle(fontWeight: FontWeight.w300),
                 ),
-                SizedBox(height: 5),
-                Text(
+                const SizedBox(height: 5),
+                const Text(
                   'Mobile App Developer and Open source enthusiastic',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 14, fontFamily: "Poppins"),
                 ),
-                SizedBox(height: 5),
-                ProfileListItems(),
+                const SizedBox(height: 5),
+                ProfileListItems(userInfo: widget.userInfo, token: widget.token),
               ],
             ),
           )
@@ -100,7 +113,9 @@ class AppBarButton extends StatelessWidget {
 }
 
 class AvatarImage extends StatelessWidget {
-  const AvatarImage({Key? key}) : super(key: key);
+  const AvatarImage({Key? key, required this.avatarUrl}) : super(key: key);
+
+  final String avatarUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -113,10 +128,10 @@ class AvatarImage extends StatelessWidget {
         decoration: avatarDecoration,
         padding: const EdgeInsets.all(3),
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
-              image: AssetImage('assets/images/user.png'),
+              image: NetworkImage(avatarUrl),
             ),
           ),
         ),
@@ -190,12 +205,16 @@ class ProfileListItem extends StatelessWidget {
   final IconData icon;
   final String text;
   final bool hasNavigation;
+  final UserModel? userInfo;
+  final String? token;
 
   const ProfileListItem({
     Key? key,
     required this.icon,
     required this.text,
     this.hasNavigation = true,
+    this.userInfo,
+    this.token,
   }) : super(key: key);
 
   @override
@@ -203,14 +222,18 @@ class ProfileListItem extends StatelessWidget {
     return GestureDetector(
       onTap: (){
         if(text == 'Settings'){
+          log("from here: " + userInfo!.name);
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const UserAppSettingsScreen())
+              MaterialPageRoute(builder: (context) => UserAppSettingsScreen(
+                  userInfo: userInfo,
+                  token: token!
+              ))
           );
         }
         if(text == 'Logout'){
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => LoginWidget()),
+            MaterialPageRoute(builder: (context) => const LoginWidget()),
             (route) => false
           );
         }
@@ -250,7 +273,10 @@ class ProfileListItem extends StatelessWidget {
 }
 
 class ProfileListItems extends StatelessWidget {
-  const ProfileListItems({Key? key}) : super(key: key);
+  const ProfileListItems({Key? key, required this.userInfo, required this.token}) : super(key: key);
+
+  final UserModel? userInfo;
+  final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -258,28 +284,30 @@ class ProfileListItems extends StatelessWidget {
       child:Padding(
         padding: const EdgeInsets.only(left: 10),
         child: ListView(
-          children: const <Widget>[
-            ProfileListItem(
+          children: <Widget>[
+            const ProfileListItem(
               icon: LineAwesomeIcons.user_shield,
               text: 'Privacy',
             ),
-            ProfileListItem(
+            const ProfileListItem(
               icon: LineAwesomeIcons.history,
               text: 'Purchase History',
             ),
-            ProfileListItem(
+            const ProfileListItem(
               icon: LineAwesomeIcons.question_circle,
               text: 'Help & Support',
             ),
             ProfileListItem(
               icon: LineAwesomeIcons.cog,
               text: 'Settings',
+              userInfo: userInfo,
+              token: token,
             ),
-            ProfileListItem(
+            const ProfileListItem(
               icon: LineAwesomeIcons.user_plus,
               text: 'Invite a Friend',
             ),
-            ProfileListItem(
+            const ProfileListItem(
               icon: LineAwesomeIcons.alternate_sign_out,
               text: 'Logout',
               hasNavigation: false,
