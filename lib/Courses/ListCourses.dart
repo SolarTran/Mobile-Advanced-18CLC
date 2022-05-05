@@ -21,6 +21,9 @@ class _ListCoursesWidgetState extends State<ListCoursesWidget> {
   late String accessToken;
 
   late List<CourseModel> courses = [];
+  List searchResult = [];
+  bool _isSearching = false;
+  final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
@@ -29,13 +32,129 @@ class _ListCoursesWidgetState extends State<ListCoursesWidget> {
     _getCourses();
   }
 
+  _ListCoursesWidgetState() {
+    _controller.addListener(() {
+      if (_controller.text.isEmpty) {
+        setState(() {
+          _isSearching = false;
+        });
+      } else {
+        setState(() {
+          _isSearching = true;
+        });
+      }
+    });
+  }
+
   void _getCourses() async {
     courses = (await ApiService().getCourse(accessToken));
     Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
   }
 
+  void searchOperation(String searchText) {
+    searchResult.clear();
+    if (_isSearching == true) {
+      for (int i = 0; i < courses.length; i++) {
+        CourseModel data = courses[i];
+        if (data.name.toLowerCase().contains(searchText.toLowerCase())) {
+          searchResult.add(data);
+        }
+      }
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
+    final makeBody = StaggeredGridView.countBuilder(
+      padding: const EdgeInsets.all(0),
+      crossAxisCount: 2,
+      itemCount: courses.length,
+      crossAxisSpacing: 20,
+      mainAxisSpacing: 20,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            height: 150,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              image: DecorationImage(
+                  image: NetworkImage(courses[index].imageUrl),
+                  fit: BoxFit.fill,
+                  opacity: 0.5
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(courses[index].name, style: const TextStyle(
+                  fontSize: 16,
+                  color: kTextColor,
+                  fontWeight: FontWeight.bold,
+                )),
+              ],
+            ),
+          ),
+          onTap:(){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CourseDetailWidget(
+                  courseId: courses[index].id,
+                  token: accessToken
+              )),
+            );
+          },
+        );
+      },
+      staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
+    );
+
+    final makeSearchBody = StaggeredGridView.countBuilder(
+      padding: const EdgeInsets.all(0),
+      crossAxisCount: 2,
+      itemCount: searchResult.length,
+      crossAxisSpacing: 20,
+      mainAxisSpacing: 20,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            height: 150,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              image: DecorationImage(
+                  image: NetworkImage(searchResult[index].imageUrl),
+                  fit: BoxFit.fill,
+                  opacity: 0.5
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(searchResult[index].name, style: const TextStyle(
+                  fontSize: 16,
+                  color: kTextColor,
+                  fontWeight: FontWeight.bold,
+                )),
+              ],
+            ),
+          ),
+          onTap:(){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CourseDetailWidget(
+                  courseId: searchResult[index].id,
+                  token: accessToken
+              )),
+            );
+          },
+        );
+      },
+      staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
+    );
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(left: 20, top: 30, right: 20),
@@ -82,51 +201,7 @@ class _ListCoursesWidgetState extends State<ListCoursesWidget> {
               ],
             ),
             const SizedBox(height: 20),
-            Expanded(
-              child: StaggeredGridView.countBuilder(
-                padding: const EdgeInsets.all(0),
-                crossAxisCount: 2,
-                itemCount: courses.length,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      height: 150,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        image: DecorationImage(
-                          image: NetworkImage(courses[index].imageUrl),
-                          fit: BoxFit.fill,
-                          opacity: 0.5
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(courses[index].name, style: const TextStyle(
-                            fontSize: 16,
-                            color: kTextColor,
-                            fontWeight: FontWeight.bold,
-                          )),
-                        ],
-                      ),
-                    ),
-                    onTap:(){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CourseDetailWidget(
-                            courseId: courses[index].id,
-                            token: accessToken
-                        )),
-                      );
-                    },
-                  );
-                },
-                staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
-              ),
-            ),
+            Expanded(child: searchResult.isNotEmpty || _controller.text.isNotEmpty ? makeSearchBody : makeBody),
 
           ],
         ),

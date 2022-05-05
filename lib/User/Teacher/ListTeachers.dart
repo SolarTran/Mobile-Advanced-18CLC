@@ -1,7 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:mobile/Model/TeacherModel.dart';
 import 'package:mobile/User/Teacher/TeacherDetail.dart';
-import '../../Service/API.dart';
 import 'config.dart';
 import 'package:flutter/material.dart';
 
@@ -19,11 +20,41 @@ class _ListTeachersScreenState extends State<ListTeachersScreen> {
   List<TeacherModel>? teachers;
   late String accessToken;
   final List<String> filters = <String>['PETS', 'IETLS', 'TOEIC', 'TOEFL'];
+  List searchResult = [];
+  bool _isSearching = false;
+  final TextEditingController _controller = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     teachers = widget.teachers;
     accessToken = widget.token!;
+  }
+
+  _ListTeachersScreenState() {
+    _controller.addListener(() {
+      if (_controller.text.isEmpty) {
+        setState(() {
+          _isSearching = false;
+        });
+      } else {
+        setState(() {
+          _isSearching = true;
+        });
+      }
+    });
+  }
+
+  void searchOperation(String searchText) {
+    searchResult.clear();
+    if (_isSearching == true) {
+      for (int i = 0; i < teachers!.length; i++) {
+        TeacherModel data = teachers![i];
+        if (data.name.toLowerCase().contains(searchText.toLowerCase())) {
+          searchResult.add(data);
+        }
+      }
+    }
   }
 
   @override
@@ -86,6 +117,16 @@ class _ListTeachersScreenState extends State<ListTeachersScreen> {
       },
     );
 
+    final makeSearchBody = ListView.builder(
+      padding: EdgeInsets.zero,
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: searchResult.length,
+      itemBuilder: (BuildContext context, int index) {
+        return makeCard(searchResult[index]);
+      },
+    );
+
     final listFilter = ListView.builder(
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
@@ -124,31 +165,38 @@ class _ListTeachersScreenState extends State<ListTeachersScreen> {
                 const Text("Find a teacher", style: kSubheadingextStyle),
                 const SizedBox(height: 10),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  height: 60,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF5F5F7),
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      SvgPicture.asset("assets/icons/search.svg"),
-                      const SizedBox(width: 16),
-                      const Text(
-                        "Search for anything",
-                        style: TextStyle(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    height: 60,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF5F5F7),
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          hintText: "Search for something",
+                          border: InputBorder.none,
+                          prefixIcon: Icon(Icons.search),
+                        ),
+                        style: const TextStyle(
                           fontSize: 18,
                           color: Color(0xFFA0A5BD),
                         ),
-                      )
-                    ],
-                  ),
+                        onChanged: searchOperation,
+                        onTap: () {
+                          setState(() {
+                            _isSearching = true;
+                          });
+                        }
+                      ),
+                    )
                 ),
                 const SizedBox(height: 20),
                 SizedBox(height: 30, child: listFilter),
                 const SizedBox(height: 20),
-                Flexible(child: makeBody)
+                Flexible(child: searchResult.isNotEmpty || _controller.text.isNotEmpty ? makeSearchBody : makeBody)
               ],
             )));
   }
