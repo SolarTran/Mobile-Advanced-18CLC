@@ -48,8 +48,8 @@ class _DashboardState extends State<Dashboard> {
   void _getTeachers() async {
     teachers = (await ApiService().getTeachers(widget.token));
     _widgetOptions = <Widget>[
-      ListCoursesWidget(token: widget.token),
-      ListTeachersScreen(token: widget.token, teachers: teachers),
+      ListCoursesWidget(token: widget.token, username: widget.user!.name),
+      ListTeachersScreen(token: widget.token, teachers: teachers, username: widget.user!.name),
       HomePage(
         student: widget.user,
         token: widget.token,
@@ -65,7 +65,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _widgetOptions == null ? ListCoursesWidget(token: widget.token): _widgetOptions!.elementAt(_selectedIndex),
+      body: _widgetOptions == null ? ListCoursesWidget(token: widget.token, username: widget.user!.name): _widgetOptions!.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

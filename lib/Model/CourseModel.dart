@@ -70,7 +70,6 @@ class TopicModel {
     required this.name,
     required this.nameFile,
     required this.description,
-    required this.videoUrl,
     required this.createdAt,
     required this.updatedAt
   });
@@ -80,7 +79,6 @@ class TopicModel {
   String name;
   String nameFile;
   String description;
-  String videoUrl;
   String createdAt;
   String updatedAt;
 
@@ -91,7 +89,6 @@ class TopicModel {
     name: json["name"],
     nameFile: json["nameFile"],
     description: json["description"],
-    videoUrl: json["videoUrl"],
     createdAt: json["createdAt"],
     updatedAt: json["updatedAt"],
   );
@@ -103,7 +100,6 @@ class TopicModel {
     "name": name,
     "nameFile": nameFile,
     "description": description,
-    "videoUrl": videoUrl,
     "createdAt": createdAt,
     "updatedAt": updatedAt,
   };

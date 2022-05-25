@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../Authentication/login.dart';
+import '../Authentication/Login.dart';
 import '../Model/UserModel.dart';
 import 'EditProfile.dart';
 

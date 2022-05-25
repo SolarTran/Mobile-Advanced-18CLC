@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile/Service/API.dart';
 
 import '../Utils/DialogWidget.dart';
-import 'login.dart';
+import 'Login.dart';
 
 class SendMailWidget extends StatefulWidget {
   const SendMailWidget({Key? key}) : super(key: key);

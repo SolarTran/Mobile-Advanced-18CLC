@@ -7,10 +7,11 @@ import 'config.dart';
 import 'package:flutter/material.dart';
 
 class ListTeachersScreen extends StatefulWidget {
-  const ListTeachersScreen({Key? key, required this.teachers, required this.token}) : super(key: key);
+  const ListTeachersScreen({Key? key, required this.teachers, required this.token, required this.username}) : super(key: key);
 
   final List<TeacherModel>? teachers;
   final String? token;
+  final String username;
 
   @override
   _ListTeachersScreenState createState() => _ListTeachersScreenState();
@@ -161,7 +162,7 @@ class _ListTeachersScreenState extends State<ListTeachersScreen> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                const Text("Hey Alex,", style: kHeadingextStyle),
+                Text("Hey ${widget.username},", style: kHeadingextStyle),
                 const Text("Find a teacher", style: kSubheadingextStyle),
                 const SizedBox(height: 10),
                 Container(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mobile/Courses/CourseDetail.dart';
 import 'package:mobile/Model/CourseModel.dart';
@@ -7,9 +6,10 @@ import '../Service/API.dart';
 import 'config.dart';
 
 class ListCoursesWidget extends StatefulWidget {
-  const ListCoursesWidget({Key? key, required this.token}) : super(key: key);
+  const ListCoursesWidget({Key? key, required this.token, required this.username}) : super(key: key);
 
   final String token;
+  final String username;
 
   @override
   _ListCoursesWidgetState createState() => _ListCoursesWidgetState();
@@ -162,7 +162,7 @@ class _ListCoursesWidgetState extends State<ListCoursesWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 20),
-            const Text("Hey Alex,", style: kHeadingextStyle),
+            Text("Hey ${widget.username},", style: kHeadingextStyle),
             const Text("Find a course you want to learn", style: kSubheadingextStyle),
             Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -184,9 +184,12 @@ class _ListCoursesWidgetState extends State<ListCoursesWidget> {
                       fontSize: 18,
                       color: Color(0xFFA0A5BD),
                     ),
-                    onSubmitted: (value) {
-                      setState(() {});
-                    },
+                      onChanged: searchOperation,
+                      onTap: () {
+                        setState(() {
+                          _isSearching = true;
+                        });
+                      }
                   ),
                 )
             ),

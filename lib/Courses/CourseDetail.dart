@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/Model/CourseModel.dart';
@@ -18,26 +20,35 @@ class _CourseDetailWidgetState extends State<CourseDetailWidget> {
 
   late String accessToken;
   late String id;
-  late CourseModel courseDetail;
-  late List <TopicModel> topics;
+  CourseModel courseDetail = CourseModel(
+      id: "964bed84-6450-49ee-92d5-e8c565864bd9",
+      name: "Life in the Internet Age",
+      description: "Let's discuss how technology is changing the way we live",
+      imageUrl: "https://camblycurriculumicons.s3.amazonaws.com/5e0e8b212ac750e7dc9886ac?h=d41d8cd98f00b204e9800998ecf8427e",
+      level: "abc",
+      reason: "abc",
+      purpose: "abc",
+      defaultPrice: 1,
+      coursePrice: 1,
+      createdAt: "abc",
+      updatedAt: "abc"
+  );
+  List <TopicModel> topics = [];
   @override
   void initState() {
     super.initState();
     accessToken = widget.token;
     id = widget.courseId;
     _getCourseDetail();
-    _getTopics();
   }
 
   void _getCourseDetail() async {
     courseDetail = (await ApiService().getCourseDetail(id, accessToken));
-    Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
-  }
-
-  void _getTopics() async {
     topics = (await ApiService().getTopics(id, accessToken));
     Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
+    log("From course detail: " + topics[0].description);
   }
+
 
   @override
   Widget build(BuildContext context) {
